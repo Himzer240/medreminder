@@ -1,11 +1,16 @@
 {
-  "versionCode": 125,
-  "versionName": "8.25.2",
-  "url": "https://cdn.jsdelivr.net/gh/Himzer240/medreminder@main/releases/android/medreminder-8.25.2.apk",
-  "watch": "https://cdn.jsdelivr.net/gh/Himzer240/medreminder@main/releases/watch/medwatch-1.20.bin",
-  "watchVersion": "1.20",
-  "note": "更新检查与下载改走 jsDelivr 镜像（国内可连），连不上自动换备用地址；更新包直接走仓库",
+  "versionCode": 126,
+  "versionName": "8.25.3",
+  "url": "https://cdn.jsdelivr.net/gh/Himzer240/medreminder@main/releases/android/medreminder-8.25.3.apk",
+  "watch": "https://cdn.jsdelivr.net/gh/Himzer240/medreminder@main/releases/watch/medwatch-1.21.bin",
+  "watchVersion": "1.21",
+  "note": "手表端 1.21：计划可暂停（主页不显示，设置里可选恢复或禁用）；手表设置页颜色跟随手机主题",
   "history": [
+    {
+      "version": "8.25.3",
+      "note": "表端 1.21 暂停计划 + 设置页配色",
+      "url": "https://cdn.jsdelivr.net/gh/Himzer240/medreminder@main/releases/android/medreminder-8.25.3.apk"
+    },
     {
       "version": "8.25.2",
       "note": "镜像加速 + 从仓库取包",
@@ -25,11 +30,6 @@
       "version": "8.24.6",
       "note": "手表设置页背景跟主题色",
       "url": "https://cdn.jsdelivr.net/gh/Himzer240/medreminder@main/releases/android/medreminder-8.24.6.apk"
-    },
-    {
-      "version": "8.24.5",
-      "note": "手表背景色真正同步",
-      "url": "https://cdn.jsdelivr.net/gh/Himzer240/medreminder@main/releases/android/medreminder-8.24.5.apk"
     }
   ]
 }
