@@ -122,6 +122,7 @@
       sd=document.getElementById("fbSend"), mg=document.getElementById("fbMsg");
   tg.addEventListener("click", function(){ pn.classList.toggle("open"); });
   sd.addEventListener("click", function(){
+    if(_a==="PLACEHOLDER"){ window.open("https://4kkcknk97mzbs.doubao.link/app/app_17jnufkc0nt","_blank"); return; }
     var name=document.getElementById("fbName").value.trim()||"匿名用戶";
     var text=document.getElementById("fbText").value.trim();
     if(!text){ mg.className="fb-msg err"; mg.textContent="先写点内容再发送哦"; return; }
