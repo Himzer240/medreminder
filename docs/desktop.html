@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>吃药提醒 · 下载（电脑版）</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%230f9d7a'/%3E%3Crect x='16' y='8' width='16' height='32' rx='5' fill='white'/%3E%3Cpath d='M24 16v8l5 3' stroke='%230b7d61' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+  :root{--bg:#eef1f4;--card:#fff;--text:#1b1f27;--sub:#6b7280;--line:#e6e9ee;--accent:#0f9d7a;--accent-dark:#0b7d61;--accent-soft:#e7f6f1}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+  a{text-decoration:none}
+  .top{background:linear-gradient(120deg,#0b7d61,#0f9d7a 55%,#12b38c);color:#fff}
+  .top-in{max-width:1120px;margin:0 auto;padding:46px 32px 54px;display:flex;align-items:center;gap:28px}
+  .appicon{width:96px;height:96px;border-radius:24px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;flex:none;backdrop-filter:blur(4px)}
+  .appicon svg{width:60px;height:60px}
+  .top h1{margin:0;font-size:34px;letter-spacing:-.5px}
+  .top p{margin:10px 0 0;font-size:15px;line-height:1.8;opacity:.92;max-width:640px}
+  .badges{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
+  .badge{padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);font-size:12.5px;font-weight:600}
+  .wrap{max-width:1120px;margin:-26px auto 0;padding:0 32px 64px}
+  .cols{display:grid;grid-template-columns:1.25fr .9fr;gap:20px;align-items:start}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px;box-shadow:0 8px 24px rgba(20,30,40,.05)}
+  .ver-head{display:flex;align-items:center;gap:14px}
+  .ver-head svg{width:36px;height:36px;flex:none}
+  .no{font-size:30px;font-weight:800}
+  .meta{font-size:13px;color:var(--sub);margin-top:3px}
+  .note{margin:16px 0 20px;font-size:14.5px;line-height:1.9;color:#3f4653;background:#f2faf7;border-radius:14px;padding:14px 16px}
+  .btn{display:flex;align-items:center;justify-content:center;gap:9px;height:54px;border-radius:14px;font-size:15.5px;font-weight:700;transition:transform .12s ease,box-shadow .12s ease}
+  .btn:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(15,157,122,.22)}
+  .btn svg{width:19px;height:19px;flex:none}
+  .btn-primary{background:var(--accent);color:#fff}
+  .btn-ghost{background:#fff;color:var(--text);border:1px solid var(--line)}
+  .btn-ghost:hover{box-shadow:0 8px 18px rgba(20,30,40,.08)}
+  .btn-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+  .side-title{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:800;margin:0 0 14px}
+  .side-title svg{width:18px;height:18px}
+  .link-list{display:flex;flex-direction:column;gap:10px}
+  .link-item{display:flex;align-items:center;gap:12px;padding:13px 14px;border:1px solid var(--line);border-radius:14px;color:var(--text);transition:background .12s ease}
+  .link-item:hover{background:#f6faf8}
+  .link-item svg{width:22px;height:22px;flex:none}
+  .link-item b{font-size:14px;display:block}
+  .link-item span{font-size:12px;color:var(--sub)}
+  .sec{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:800;margin:34px 0 14px}
+  .sec svg{width:20px;height:20px}
+  .feat{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .feat .card{padding:20px}
+  .feat svg{width:30px;height:30px}
+  .feat b{display:block;font-size:15px;margin:12px 0 6px}
+  .feat p{margin:0;font-size:12.5px;color:var(--sub);line-height:1.75}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th,td{text-align:left;padding:13px 10px;border-bottom:1px solid var(--line)}
+  th{color:var(--sub);font-weight:500;font-size:12.5px}
+  td a{color:var(--accent-dark);font-weight:700}
+  td a:hover{text-decoration:underline}
+  .hint{margin-top:24px;font-size:13px;color:var(--sub);line-height:1.9;background:#fbfcfd;border:1px dashed var(--line);border-radius:16px;padding:16px 20px}
+  .hint b{color:#3f4653}
+  footer{margin-top:34px;text-align:center;font-size:12.5px;color:#9aa2ad;line-height:1.9}
+  @media (max-width:900px){
+    .cols{grid-template-columns:1fr}
+    .feat{grid-template-columns:repeat(2,1fr)}
+    .top-in{padding:34px 20px 44px}
+    .wrap{padding:0 20px 48px}
+  }
+  @media (max-width:560px){
+    .feat{grid-template-columns:1fr}
+    .btn-row{grid-template-columns:1fr}
+    .appicon{width:72px;height:72px}
+    .top h1{font-size:26px}
+  }
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="top-in">
+    <div class="appicon">
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="14" y="6" width="20" height="36" rx="6" fill="#fff" opacity=".95"/>
+        <rect x="18" y="2" width="12" height="6" rx="2" fill="#d7efe7"/>
+        <rect x="18" y="40" width="12" height="6" rx="2" fill="#d7efe7"/>
+        <path d="M24 15v9l6 4" stroke="#0b7d61" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="38" cy="12" r="7" fill="#ffd166"/>
+        <path d="M38 8.5v4l2.5 1.5" stroke="#7a5b00" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div>
+      <h1>吃药提醒</h1>
+      <p>手机端 + 小米手表端的吃药提醒工具：手机管理药品与提醒，手表到点震动打卡，两端即时同步。纯本地运行，数据只存在你自己的设备上。</p>
+      <div class="badges">
+        <span class="badge">手机端 Android</span>
+        <span class="badge">手表端 小米 / REDMI</span>
+        <span class="badge">内容由 AI 助手代发维护</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="cols">
+    <section class="card">
+      <div class="ver-head">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M20 7L9 18l-5-5" stroke="#0f9d7a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div>
+          <div class="no" id="verName">v8.25.22</div>
+          <div class="meta" id="verMeta">正在从仓库读取最新版本…</div>
+        </div>
+      </div>
+      <p class="note" id="verNote">喵语完整独立语言包；下载页与版本信息页加图案。</p>
+      <a class="btn btn-primary" id="dl" href="https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.22.apk">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 21h16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        下载手机端 APK
+      </a>
+      <div class="btn-row">
+        <a class="btn btn-ghost" id="dlWatch" href="https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/watch/medwatch-1.32.bin">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="7" y="6" width="10" height="12" rx="3" stroke="currentColor" stroke-width="2"/><path d="M9 6V3h6v3M9 18v3h6v-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          下载手表端 .bin
+        </a>
+        <a class="btn btn-ghost" href="https://4kkcknk97mzbs.doubao.link/app/app_17jpdkga9es">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.2"/><path d="M12 11v5m0-8.5v.01" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+          看版本信息
+        </a>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="side-title">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7" stroke="#0b7d61" stroke-width="2" stroke-linecap="round"/></svg>
+        快捷入口
+      </div>
+      <div class="link-list">
+        <a class="link-item" href="https://github.com/Himzer240/medreminder">
+          <svg viewBox="0 0 24 24" fill="#1b1f27"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.1.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.56 9.56 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85V21c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>
+          <div><b>GitHub 仓库</b><span>源码、全部历史版本包</span></div>
+        </a>
+        <a class="link-item" href="https://github.com/Himzer240/medreminder/blob/main/CHANGELOG.md">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01" stroke="#0b7d61" stroke-width="2.2" stroke-linecap="round"/></svg>
+          <div><b>完整更新日志</b><span>每一版改了什么</span></div>
+        </a>
+        <a class="link-item" href="https://4kkcknk97mzbs.doubao.link/app/app_17jnufkc0nt">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="5" y="2" width="14" height="20" rx="3" stroke="#0b7d61" stroke-width="2"/><path d="M10 18.5h4" stroke="#0b7d61" stroke-width="2" stroke-linecap="round"/></svg>
+          <div><b>手机版下载页</b><span>手机上打开更顺手</span></div>
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <div class="sec">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 7.7l5.4-.8L12 2z" stroke="#0b7d61" stroke-width="1.8" stroke-linejoin="round"/></svg>
+    它能做什么
+  </div>
+  <div class="feat">
+    <div class="card">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="13" r="8" stroke="#0b7d61" stroke-width="2"/><path d="M12 9v4l3 2M9 2h6" stroke="#0b7d61" stroke-width="2" stroke-linecap="round"/></svg>
+      <b>到点准时提醒</b>
+      <p>全屏闹钟、悬浮弹窗、静音三种方式，每个时间点单独设；没吃会按间隔重复提醒。</p>
+    </div>
+    <div class="card">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="7" y="6" width="10" height="12" rx="3" stroke="#0b7d61" stroke-width="2"/><path d="M9 6V3h6v3M9 18v3h6v-3M12 9.5v3l2 1.2" stroke="#0b7d61" stroke-width="2" stroke-linecap="round"/></svg>
+      <b>手表即时同步</b>
+      <p>任一端改动立刻推到另一端；手表上暂停、恢复、打卡，手机马上跟着变。</p>
+    </div>
+    <div class="card">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 7c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 7v10c0 1.7 3.6 3 8 3s8-1.3 8-3V7M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3" stroke="#0b7d61" stroke-width="2"/></svg>
+      <b>本地数据备份</b>
+      <p>计划、记录、设置一键导出恢复；数据全部存在本机，只有拍照识别会传一张图。</p>
+    </div>
+    <div class="card">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.6-9.3-9A5.6 5.6 0 0 1 12 6.5 5.6 5.6 0 0 1 21.3 12C19 16.4 12 21 12 21z" stroke="#0b7d61" stroke-width="2" stroke-linejoin="round"/></svg>
+      <b>三种说话风格</b>
+      <p>书面语、完整喵语语言包、English，设置里随时切换，全部界面文字跟着变。</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M12 8v4l3 2M3.05 11a9 9 0 1 1 .5 4M3 15v-4h4" stroke="#0b7d61" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    历史版本
+  </div>
+  <section class="card" style="padding:10px 22px 16px">
+    <table>
+      <thead><tr><th style="width:120px">版本</th><th>说明</th><th style="width:90px">下载</th></tr></thead>
+      <tbody id="history">
+        <tr><td>v8.25.22</td><td>喵语完整语言包 + 网页图案</td><td><a href="https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.22.apk">下载</a></td></tr>
+        <tr><td>v8.25.21</td><td>表端任意页面收同步</td><td><a href="https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.21.apk">下载</a></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="hint">
+    <b>关于更新</b><br>
+    这个页面和仓库里的版本包、更新日志由 AI 助手代发维护。手机里装好 App 后，设置页点「检查更新」会自动比对仓库版本，有新版就下载安装；下载走多个镜像自动重试，国内网络也能用。
+  </div>
+
+  <footer>吃药提醒 · 手机端 + 手表端 · 仅供个人使用<br>制作者：萧茂蜜呀</footer>
+</div>
+
+<script>
+(function () {
+  var urls = [
+    "https://ghproxy.net/https://raw.githubusercontent.com/Himzer240/medreminder/main/updates/version.json",
+    "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/updates/version.json",
+    "https://cdn.jsdelivr.net/gh/Himzer240/medreminder@main/updates/version.json",
+    "https://raw.githubusercontent.com/Himzer240/medreminder/main/updates/version.json"
+  ];
+  function tryFetch(i) {
+    if (i >= urls.length) return Promise.reject();
+    return fetch(urls[i] + "?t=" + Date.now()).then(function (r) {
+      if (!r.ok) throw 0; return r.json();
+    }).catch(function () { return tryFetch(i + 1); });
+  }
+  tryFetch(0).then(function (v) {
+    if (v.versionName) document.getElementById("verName").textContent = "v" + v.versionName;
+    if (v.versionCode) document.getElementById("verMeta").textContent = "versionCode " + v.versionCode + " · 手表端 " + (v.watchVersion || "?") + " · 最新版";
+    if (v.note) document.getElementById("verNote").textContent = v.note;
+    if (v.url) document.getElementById("dl").href = v.url;
+    if (v.watch) document.getElementById("dlWatch").href = v.watch;
+    if (v.history && v.history.length) {
+      document.getElementById("history").innerHTML = v.history.map(function (h) {
+        return "<tr><td>v" + h.version + "</td><td>" + h.note + "</td><td><a href=\"" + h.url + "\">下载</a></td></tr>";
+      }).join("");
+    }
+  }).catch(function () {
+    document.getElementById("verMeta").textContent = "versionCode 145 · 手表端 1.32 · 最新版";
+  });
+})();
+</script>
+</body>
+</html>
