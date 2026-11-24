@@ -1,11 +1,16 @@
 {
-  "versionCode": 132,
-  "versionName": "8.25.9",
-  "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.9.apk",
+  "versionCode": 133,
+  "versionName": "8.25.10",
+  "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.10.apk",
   "watch": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/watch/medwatch-1.22.bin",
   "watchVersion": "1.22",
-  "note": "表端 1.22 会把暂停/禁用状态报给手机，手机列表直接标出来；检查更新取各镜像最大版本",
+  "note": "不重复下载、自动清理旧包（手机端和表端包都只留最新一份）",
   "history": [
+    {
+      "version": "8.25.10",
+      "note": "不重复下载 + 清理旧包",
+      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.10.apk"
+    },
     {
       "version": "8.25.9",
       "note": "表端状态同步到手机",
@@ -25,11 +30,6 @@
       "version": "8.25.6",
       "note": "版本检查走代理，发版即时可见",
       "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.6.apk"
-    },
-    {
-      "version": "8.25.5",
-      "note": "日志（闪退可导出）",
-      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.5.apk"
     }
   ]
 }
