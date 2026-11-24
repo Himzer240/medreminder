@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="吃药提醒 App 下载页：小米手表配套的吃药提醒，最新版 v8.22.0">
+<meta name="description" content="吃药提醒 App 下载页：小米手表配套的吃药提醒，含最新版 APK、历史版本与更新说明">
 <title>吃药提醒 · 下载</title>
 <style>
   :root{--bg:#f3f5f7;--card:#fff;--text:#1b1f27;--sub:#6b7280;--line:#e6e9ee;--accent:#0f9d7a;--accent-dark:#0b7d61}
@@ -17,7 +17,7 @@
   .ver{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
   .ver .no{font-size:22px;font-weight:700}
   .ver .meta{font-size:12px;color:var(--sub)}
-  ul.note-list{margin:12px 0 18px;padding-left:18px;font-size:13.5px;line-height:1.85;color:#3f4653}
+  .note{margin:12px 0 18px;font-size:13.5px;line-height:1.8;color:#3f4653}
   .btn{display:flex;align-items:center;justify-content:center;gap:8px;height:50px;border-radius:14px;text-decoration:none;font-size:15px;font-weight:600}
   .btn-primary{background:var(--accent);color:#fff}
   .btn-ghost{margin-top:10px;background:#fff;color:var(--text);border:1px solid var(--line)}
@@ -29,6 +29,7 @@
   th{color:var(--sub);font-weight:500;font-size:12px}
   td a{color:var(--accent-dark);text-decoration:none;font-weight:600}
   .hint{margin-top:22px;font-size:12.5px;color:var(--sub);line-height:1.8;background:#fbfcfd;border:1px dashed var(--line);border-radius:14px;padding:14px 16px}
+  .hint b{color:#3f4653}
   footer{margin-top:28px;text-align:center;font-size:12px;color:#9aa2ad;line-height:1.8}
 </style>
 </head>
@@ -39,38 +40,58 @@
     <p>小米手表配套的吃药提醒 App：手机端负责管理药品与提醒，手表端负责到点提醒和震动。</p>
     <span class="badge">内容由 AI 助手代发维护</span>
   </header>
+
   <section class="card">
-    <div class="ver"><span class="no">v8.22.0</span><span class="meta">versionCode 110 · 最新版</span></div>
-    <ul class="note-list">
-      <li>设置页新增「检查更新」，能从 GitHub 读取版本号并直接下载安装新包</li>
-      <li>疑惑问答页改成点一下展开答案，按问题配了跳转按钮</li>
-      <li>下拉刷新阈值、持续震动、混乱模式等此前改动均已包含</li>
-    </ul>
-    <a class="btn btn-primary" href="https://aka.doubaocdn.com/s/gMXmjbdVPp">直接下载 APK</a>
-    <a class="btn btn-ghost" href="https://github.com/Himzer240/medreminder" target="_blank" rel="noopener">到 GitHub 查看仓库</a>
+    <div class="ver">
+      <span class="no" id="verName">v8.23.0</span>
+      <span class="meta" id="verMeta">versionCode 111 · 最新版</span>
+    </div>
+    <p class="note" id="verNote">主题色预设加到 24 个色卡</p>
+    <a class="btn btn-primary" id="dl" href="https://aka.doubaocdn.com/s/TjevNPoPkE">直接下载 APK</a>
+    <a class="btn btn-ghost" href="https://github.com/Himzer240/medreminder">到 GitHub 查看仓库</a>
     <div class="row">
-      <a class="btn btn-ghost" href="https://raw.githubusercontent.com/Himzer240/medreminder/main/updates/version.json" target="_blank" rel="noopener">看 GitHub 上的版本信息</a>
-      <a class="btn btn-ghost" href="https://github.com/Himzer240/medreminder/blob/main/CHANGELOG.md" target="_blank" rel="noopener">看完整更新日志</a>
+      <a class="btn btn-ghost" href="https://github.com/Himzer240/medreminder/blob/main/CHANGELOG.md">看完整更新日志</a>
+      <a class="btn btn-ghost" href="https://raw.githubusercontent.com/Himzer240/medreminder/main/updates/version.json">看版本信息</a>
     </div>
   </section>
+
   <div class="sec-title">历史版本</div>
   <section class="card" style="padding:8px 18px 14px">
     <table>
       <thead><tr><th>版本</th><th>说明</th><th>下载</th></tr></thead>
-      <tbody>
+      <tbody id="history">
+        <tr><td>v8.23.0</td><td>主题色预设加到 24 个</td><td><a href="https://aka.doubaocdn.com/s/TjevNPoPkE">下载</a></td></tr>
         <tr><td>v8.22.0</td><td>检查更新（GitHub）</td><td><a href="https://aka.doubaocdn.com/s/gMXmjbdVPp">下载</a></td></tr>
-        <tr><td>v8.21.1</td><td>问答加「为什么只有小米手表」</td><td><a href="https://aka.doubaocdn.com/s/UH2c2qUEZo">下载</a></td></tr>
-        <tr><td>v8.20.6</td><td>问答回答口语化</td><td><a href="https://aka.doubaocdn.com/s/5LVmHgLnyA">下载</a></td></tr>
-        <tr><td>v8.20.2</td><td>问答改点开展开</td><td><a href="https://aka.doubaocdn.com/s/6jprOCkyan">下载</a></td></tr>
       </tbody>
     </table>
   </section>
+
   <div class="hint">
     <b>关于更新</b><br>
     这个页面和仓库里的版本包、更新日志都是由 AI 助手代发维护的，账号主人不常在线。<br>
     手机里装的是新版时，设置页点「检查更新」会自己去 GitHub 比对版本，有新版就下载安装。
   </div>
+
   <footer>吃药提醒 · 手机端 + 手表端<br>仅供个人使用</footer>
 </div>
+<script>
+(function () {
+  fetch("../updates/version.json?t=" + Date.now())
+    .then(function (r) { return r.json(); })
+    .then(function (v) {
+      if (v.versionName) document.getElementById("verName").textContent = "v" + v.versionName;
+      if (v.versionCode) document.getElementById("verMeta").textContent = "versionCode " + v.versionCode + " · 最新版";
+      if (v.note) document.getElementById("verNote").textContent = v.note;
+      if (v.url) document.getElementById("dl").href = v.url;
+      if (v.history && v.history.length) {
+        var tb = document.getElementById("history");
+        tb.innerHTML = v.history.map(function (h) {
+          return "<tr><td>v" + h.version + "</td><td>" + h.note + "</td><td><a href=\"" + h.url + "\">下载</a></td></tr>";
+        }).join("");
+      }
+    })
+    .catch(function () {});
+})();
+</script>
 </body>
 </html>
