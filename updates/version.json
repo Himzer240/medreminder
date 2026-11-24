@@ -1,13 +1,13 @@
 {
-  "versionCode": 119,
-  "versionName": "8.24.5",
-  "url": "https://aka.doubaocdn.com/s/teS8Hyt7wR",
+  "versionCode": 120,
+  "versionName": "8.24.6",
+  "url": "https://aka.doubaocdn.com/s/Co6i6iyVEZ",
   "watch": "https://aka.doubaocdn.com/s/ULV3CkVOdt",
-  "note": "手表背景颜色真正同步：手表存住颜色、连上主动索取、断线重连自动补齐",
+  "note": "手机端「手表端设置」页背景跟主题色（补上漏掉的 pageBg）",
   "history": [
+    { "version": "8.24.6", "note": "手表设置页背景跟主题色", "url": "https://aka.doubaocdn.com/s/Co6i6iyVEZ" },
     { "version": "8.24.5", "note": "手表背景色真正同步", "url": "https://aka.doubaocdn.com/s/teS8Hyt7wR" },
     { "version": "8.24.4", "note": "步骤说明同步改名", "url": "https://aka.doubaocdn.com/s/fvf3oICSOS" },
-    { "version": "8.24.3", "note": "改名「安装手表端」", "url": "https://aka.doubaocdn.com/s/MGpQlwKpmr" },
-    { "version": "8.24.2", "note": "主题色同步到手表端", "url": "https://aka.doubaocdn.com/s/FtnXfnScgr" }
+    { "version": "8.24.3", "note": "改名「安装手表端」", "url": "https://aka.doubaocdn.com/s/MGpQlwKpmr" }
   ]
 }
