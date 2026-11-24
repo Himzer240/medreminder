@@ -1,11 +1,16 @@
 {
-  "versionCode": 133,
-  "versionName": "8.25.10",
-  "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.10.apk",
-  "watch": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/watch/medwatch-1.22.bin",
-  "watchVersion": "1.22",
-  "note": "不重复下载、自动清理旧包（手机端和表端包都只留最新一份）",
+  "versionCode": 135,
+  "versionName": "8.25.12",
+  "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.12.apk",
+  "watch": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/watch/medwatch-1.23.bin",
+  "watchVersion": "1.23",
+  "note": "表端 1.23：只暂停/恢复（按钮加大），设置页去掉已暂停清单；手机端同步把表上暂停的计划按已关闭处理",
   "history": [
+    {
+      "version": "8.25.12",
+      "note": "表端 1.23：暂停/恢复（无禁用）",
+      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.12.apk"
+    },
     {
       "version": "8.25.10",
       "note": "不重复下载 + 清理旧包",
@@ -25,11 +30,6 @@
       "version": "8.25.7",
       "note": "小米运动健康按钮常亮",
       "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.7.apk"
-    },
-    {
-      "version": "8.25.6",
-      "note": "版本检查走代理，发版即时可见",
-      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.6.apk"
     }
   ]
 }
