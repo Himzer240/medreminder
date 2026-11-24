@@ -1,0 +1,7 @@
+*.idsig
+app/build/
+watch/build/
+watch/dist/
+watch/node_modules/
+app/medreminder*.keystore
+.DS_Store

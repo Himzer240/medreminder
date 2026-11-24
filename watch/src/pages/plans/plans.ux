@@ -1,0 +1,369 @@
+<template>
+  <div class="page">
+    <div class="hd">
+      <div class="back" onclick="back">
+        <text class="backTx">返回</text>
+      </div>
+      <text class="hdTitle">计划次数</text>
+    </div>
+
+    <div class="card2" if="{{has0}}">
+      <div class="cTop">
+        <text class="cName">{{q0n}}</text>
+        <text class="cCount">{{q0c}} 次／日</text>
+      </div>
+      <text class="cTimes">{{q0t}}</text>
+      <div class="cBtns">
+        <div class="cBtn" onclick="minus0">
+          <text class="cBtnTx">－ 减少</text>
+        </div>
+        <div class="cBtn cBtnOn" onclick="plus0">
+          <text class="cBtnTx">＋ 增加</text>
+        </div>
+      </div>
+    </div>
+
+    <div class="card2" if="{{has1}}">
+      <div class="cTop">
+        <text class="cName">{{q1n}}</text>
+        <text class="cCount">{{q1c}} 次／日</text>
+      </div>
+      <text class="cTimes">{{q1t}}</text>
+      <div class="cBtns">
+        <div class="cBtn" onclick="minus1">
+          <text class="cBtnTx">－ 减少</text>
+        </div>
+        <div class="cBtn cBtnOn" onclick="plus1">
+          <text class="cBtnTx">＋ 增加</text>
+        </div>
+      </div>
+    </div>
+
+    <div class="card2" if="{{has2}}">
+      <div class="cTop">
+        <text class="cName">{{q2n}}</text>
+        <text class="cCount">{{q2c}} 次／日</text>
+      </div>
+      <text class="cTimes">{{q2t}}</text>
+      <div class="cBtns">
+        <div class="cBtn" onclick="minus2">
+          <text class="cBtnTx">－ 减少</text>
+        </div>
+        <div class="cBtn cBtnOn" onclick="plus2">
+          <text class="cBtnTx">＋ 增加</text>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty" if="{{isEmpty}}">
+      <text class="emptyTx">还没有计划</text>
+      <text class="emptySub">先在手机端同步计划</text>
+    </div>
+
+    <text class="hint">一次＝一天中的一个时间点；只改数量，钟点需在手机端改</text>
+
+    <div class="toast" if="{{toastOn}}">
+      <text class="toastText">{{tx}}</text>
+    </div>
+  </div>
+</template>
+
+<style>
+  .page {
+    width: 432px;
+    height: 514px;
+    background-color: #0E1214;
+    padding: 14px 16px;
+    flex-direction: column;
+  }
+
+  .hd {
+    height: 44px;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .back {
+    height: 34px;
+    padding: 0 14px;
+    background-color: #1C262C;
+    border-radius: 17px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .backTx {
+    font-size: 16px;
+    color: #8FA0A8;
+  }
+
+  .hdTitle {
+    font-size: 24px;
+    color: #F2F5F7;
+    font-weight: bold;
+    margin-left: 14px;
+  }
+
+  .card2 {
+    margin-top: 10px;
+    padding: 12px 14px 10px 14px;
+    background-color: #141A1E;
+    border-radius: 18px;
+    flex-direction: column;
+  }
+
+  .cTop {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cName {
+    font-size: 18px;
+    color: #E8EEF1;
+    font-weight: bold;
+  }
+
+  .cCount {
+    font-size: 15px;
+    color: #9FB0B8;
+  }
+
+  .cTimes {
+    font-size: 13px;
+    color: #7C8A92;
+    margin-top: 4px;
+  }
+
+  .cBtns {
+    flex-direction: row;
+    margin-top: 8px;
+  }
+
+  .cBtn {
+    flex: 1;
+    height: 44px;
+    margin-right: 8px;
+    border-radius: 14px;
+    background-color: #1E2A31;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cBtnOn {
+    background-color: #1098AD;
+    margin-right: 0;
+  }
+
+  .cBtnTx {
+    font-size: 16px;
+    color: #FFFFFF;
+  }
+
+  .empty {
+    margin-top: 40px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .emptyTx {
+    font-size: 18px;
+    color: #E8EEF1;
+  }
+
+  .emptySub {
+    font-size: 14px;
+    color: #7C8A92;
+    margin-top: 6px;
+  }
+
+  .hint {
+    font-size: 13px;
+    color: #6D7C84;
+    margin-top: 12px;
+  }
+
+  .toast {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    height: 46px;
+    background-color: #1098AD;
+    border-radius: 14px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .toastText {
+    font-size: 16px;
+    color: #FFFFFF;
+  }
+</style>
+
+<script>
+import storage from '@system.storage'
+import vibrator from '@system.vibrator'
+import router from '@system.router'
+
+const PLAN_KEY = 'mw_plans'
+
+function pad2(n) {
+  return n < 10 ? '0' + n : '' + n
+}
+
+function timeToMin(t) {
+  const a = t.split(':')
+  return parseInt(a[0], 10) * 60 + parseInt(a[1], 10)
+}
+
+function minToTime(m) {
+  if (m > 1435) {
+    m = 1435
+  }
+  return pad2(Math.floor(m / 60)) + ':' + pad2(m % 60)
+}
+
+export default {
+  data: {
+    has0: false,
+    has1: false,
+    has2: false,
+    isEmpty: true,
+    q0n: '', q0t: '', q0c: '',
+    q1n: '', q1t: '', q1c: '',
+    q2n: '', q2t: '', q2c: '',
+    tx: '',
+    toastOn: false,
+    vibOn: true
+  },
+
+  onInit() {
+    this.rawPlans = []
+    const that = this
+    storage.get({
+      key: 'mw_vib',
+      success: function (v) {
+        that.vibOn = v !== '0'
+      },
+      fail: function () {
+        that.vibOn = true
+      }
+    })
+    storage.get({
+      key: PLAN_KEY,
+      success: function (v) {
+        try {
+          that.rawPlans = JSON.parse(v) || []
+        } catch (e) {
+          that.rawPlans = []
+        }
+        that.render()
+      },
+      fail: function () {
+        that.rawPlans = []
+        that.render()
+      }
+    })
+  },
+
+  render() {
+    this.has0 = this.rawPlans.length > 0
+    this.has1 = this.rawPlans.length > 1
+    this.has2 = this.rawPlans.length > 2
+    this.isEmpty = this.rawPlans.length === 0
+    if (this.has0) {
+      this.q0n = this.rawPlans[0].name
+      this.q0t = (this.rawPlans[0].times || []).join(' / ')
+      this.q0c = (this.rawPlans[0].times || []).length
+    }
+    if (this.has1) {
+      this.q1n = this.rawPlans[1].name
+      this.q1t = (this.rawPlans[1].times || []).join(' / ')
+      this.q1c = (this.rawPlans[1].times || []).length
+    }
+    if (this.has2) {
+      this.q2n = this.rawPlans[2].name
+      this.q2t = (this.rawPlans[2].times || []).join(' / ')
+      this.q2c = (this.rawPlans[2].times || []).length
+    }
+  },
+
+  save() {
+    storage.set({ key: PLAN_KEY, value: JSON.stringify(this.rawPlans) })
+  },
+
+  tip(msg) {
+    this.tx = msg
+    this.toastOn = true
+    const that = this
+    if (this.tipTimer) {
+      clearTimeout(this.tipTimer)
+    }
+    this.tipTimer = setTimeout(function () {
+      that.toastOn = false
+    }, 1600)
+    if (this.vibOn) {
+      vibrator.vibrate({ mode: 'short' })
+    }
+  },
+
+  addTime(index) {
+    const plan = this.rawPlans[index]
+    if (!plan) {
+      return
+    }
+    const times = plan.times || []
+    if (times.length >= 8) {
+      this.tip('最多 8 次')
+      return
+    }
+    let base = 8 * 60
+    if (times.length > 0) {
+      base = timeToMin(times[times.length - 1]) + 240
+    }
+    let next = minToTime(base)
+    if (times.indexOf(next) >= 0) {
+      if (times.indexOf('23:55') < 0) {
+        next = '23:55'
+      } else {
+        this.tip('已到 23:55，需在手机端改时间')
+        return
+      }
+    }
+    times.push(next)
+    plan.times = times
+    this.save()
+    this.render()
+    this.tip('已加一次：' + next)
+  },
+
+  delTime(index) {
+    const plan = this.rawPlans[index]
+    if (!plan) {
+      return
+    }
+    const times = plan.times || []
+    if (times.length <= 1) {
+      this.tip('至少要保留一次')
+      return
+    }
+    const removed = times.pop()
+    plan.times = times
+    this.save()
+    this.render()
+    this.tip('已减一次：' + removed)
+  },
+
+  plus0() { this.addTime(0) },
+  plus1() { this.addTime(1) },
+  plus2() { this.addTime(2) },
+  minus0() { this.delTime(0) },
+  minus1() { this.delTime(1) },
+  minus2() { this.delTime(2) },
+
+  back() {
+    router.back()
+  }
+}
+</script>

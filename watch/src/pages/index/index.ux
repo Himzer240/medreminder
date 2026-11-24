@@ -1,0 +1,1352 @@
+<template>
+  <div class="page" style="background-color: {{pageBg}}">
+    <div class="topbar">
+      <text class="title">吃药提醒</text>
+      <div class="rightBox">
+        <text class="date">{{todayText}}</text>
+        <text class="conn {{connCls}}" style="color: {{connColor}}">{{connTx}}</text>
+        <div class="gear" onclick="goSettings">
+          <text class="gearTx">设置</text>
+        </div>
+      </div>
+    </div>
+
+    <div class="nextCard" style="background-color: {{cardBg}}">
+      <div class="nextLeft">
+        <text class="nextLabel" style="color: {{nextLabelColor}}">{{nextLabel}}</text>
+        <text class="nextName">{{nextName}}</text>
+        <text class="nextMeta">{{nextMeta}}</text>
+      </div>
+      <div class="nextBtn {{nextBtnClass}}" style="background-color: {{btnBg}}" onclick="tapNext">
+        <text class="nextBtnText">{{nextBtnText}}</text>
+      </div>
+    </div>
+
+    <div class="rows">
+      <div class="row" if="{{has0}}" style="background-color: {{rowBg}}" onclick="tap0" onlongpress="long0">
+        <div class="rowL">
+          <text class="rowName">{{p0n}}</text>
+          <text class="rowMeta">{{p0m}}</text>
+        </div>
+        <text class="rowCount {{p0cls}}" style="color: {{p0cColor}}">{{p0c}}</text>
+      </div>
+
+      <div class="row" if="{{has1}}" style="background-color: {{rowBg}}" onclick="tap1" onlongpress="long1">
+        <div class="rowL">
+          <text class="rowName">{{p1n}}</text>
+          <text class="rowMeta">{{p1m}}</text>
+        </div>
+        <text class="rowCount {{p1cls}}" style="color: {{p1cColor}}">{{p1c}}</text>
+      </div>
+
+      <div class="row" if="{{has2}}" style="background-color: {{rowBg}}" onclick="tap2" onlongpress="long2">
+        <div class="rowL">
+          <text class="rowName">{{p2n}}</text>
+          <text class="rowMeta">{{p2m}}</text>
+        </div>
+        <text class="rowCount {{p2cls}}" style="color: {{p2cColor}}">{{p2c}}</text>
+      </div>
+
+      <div class="empty" if="{{isEmpty}}">
+        <text class="emptyText">还没有计划</text>
+        <text class="emptySub">先在手机 App 里点「同步计划到手表」</text>
+      </div>
+    </div>
+
+    <div class="bar">
+      <div class="undo" onclick="undo">
+        <text class="undoText">撤销上次记录</text>
+      </div>
+    </div>
+
+    <div class="toast" if="{{toastOn}}">
+      <text class="toastText">{{toast}}</text>
+    </div>
+
+    <div class="mask" if="{{editOn}}" onclick="editNoop">
+      <div class="dialog">
+        <text class="dlgTitle">{{editName}}</text>
+        <text class="dlgSub">修改今天已吃次数（不影响计划总次数）</text>
+        <div class="editRow">
+          <div class="editBtn" onclick="editMinus">
+            <text class="editTx">-</text>
+          </div>
+          <text class="editVal">{{editCount}} 次</text>
+          <div class="editBtn" onclick="editPlus">
+            <text class="editTx">+</text>
+          </div>
+        </div>
+        <div class="dlgRow">
+          <div class="dlgBtn ghost" onclick="editCancel">
+            <text class="dlgGhostText">取消</text>
+          </div>
+          <div class="dlgBtn solid {{editCanSave ? '' : 'dlgBtnLocked'}}" onclick="editSave">
+            <text class="dlgSolidText">{{editCanSave ? '保存' : ('保存 ' + editLeft + 's')}}</text>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mask" if="{{askOn}}" onclick="maskNoop">
+      <div class="dialog">
+        <text class="dlgTitle">确认已服用该次药物？</text>
+        <text class="dlgSub">{{askSub}}</text>
+        <div class="dlgRow">
+          <div class="dlgBtn ghost" onclick="askNo">
+            <text class="dlgGhostText">否</text>
+          </div>
+          <div class="dlgBtn solid" onclick="askYes">
+            <text class="dlgSolidText">是</text>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mask" if="{{overlay}}" onclick="maskNoop">
+      <div class="dialog">
+        <text class="dlgTitle">{{overlayTitle}}</text>
+        <text class="dlgSub">{{overlaySub}}</text>
+        <text class="dlgCount">{{canConfirm ? '✓' : countdown}}</text>
+        <div class="dlgRow">
+          <div class="dlgBtn ghost" onclick="cancelOverflow">
+            <text class="dlgGhostText">取消</text>
+          </div>
+          <div class="dlgBtn solid {{canConfirm ? '' : 'dlgBtnLocked'}}" onclick="confirmOverflow">
+            <text class="dlgSolidText">确定再吃</text>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style>
+  .page {
+    width: 432px;
+    height: 514px;
+    background-color: #0E1214;
+    padding: 16px 18px;
+    flex-direction: column;
+  }
+
+  .topbar {
+    height: 46px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .rightBox {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .gear {
+    height: 32px;
+    padding: 0 14px;
+    background-color: #1C262C;
+    border-radius: 16px;
+    justify-content: center;
+    align-items: center;
+    margin-left: 8px;
+  }
+
+  .gearTx {
+    font-size: 15px;
+    color: #8FA0A8;
+  }
+
+  .title {
+    font-size: 26px;
+    color: #F2F5F7;
+    font-weight: bold;
+  }
+
+  .date {
+    font-size: 18px;
+    color: #7C8A92;
+  }
+
+  .conn {
+    font-size: 15px;
+    margin-left: 10px;
+  }
+
+  .connOn {
+    color: #1098AD;
+  }
+
+  .connOff {
+    color: #7C8A92;
+  }
+
+  .nextCard {
+    height: 140px;
+    background-color: #16232A;
+    border-radius: 22px;
+    padding: 16px 18px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nextLeft {
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .nextLabel {
+    font-size: 18px;
+    color: #1098AD;
+  }
+
+  .nextName {
+    font-size: 32px;
+    color: #FFFFFF;
+    font-weight: bold;
+    margin-top: 6px;
+  }
+
+  .nextMeta {
+    font-size: 18px;
+    color: #93A2AA;
+    margin-top: 6px;
+  }
+
+  .nextBtn {
+    width: 112px;
+    height: 76px;
+    border-radius: 18px;
+    background-color: #1098AD;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .nextBtnGrey {
+    background-color: #2A3439;
+  }
+
+  .nextBtnText {
+    font-size: 22px;
+    color: #FFFFFF;
+    font-weight: bold;
+  }
+
+  .rows {
+    flex: 1;
+    flex-direction: column;
+    margin-top: 10px;
+  }
+
+  .row {
+    height: 72px;
+    background-color: #141A1E;
+    border-radius: 16px;
+    margin-top: 8px;
+    padding: 0 16px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .rowL {
+    flex-direction: column;
+  }
+
+  .rowName {
+    font-size: 22px;
+    color: #E8EEF1;
+  }
+
+  .rowMeta {
+    font-size: 16px;
+    color: #7C8A92;
+    margin-top: 4px;
+  }
+
+  .rowCount {
+    font-size: 22px;
+    color: #1098AD;
+  }
+
+  .rowCountDone {
+    font-size: 22px;
+    color: #55636B;
+  }
+
+  .empty {
+    height: 72px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .emptySub {
+    font-size: 15px;
+    color: #6D7C84;
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  .emptyText {
+    font-size: 18px;
+    color: #55636B;
+  }
+
+  .bar {
+    height: 52px;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .undo {
+    height: 40px;
+    padding: 0 18px;
+    border-width: 2px;
+    border-color: #C0392B;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .undoText {
+    font-size: 17px;
+    color: #E74C3C;
+  }
+
+  .toast {
+    position: absolute;
+    left: 96px;
+    right: 96px;
+    bottom: 64px;
+    height: 44px;
+    background-color: #1E2A31;
+    border-radius: 22px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .toastText {
+    font-size: 17px;
+    color: #E8EEF1;
+  }
+
+  .mask {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 432px;
+    height: 514px;
+    background-color: rgba(0, 0, 0, 0.62);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .dialog {
+    width: 356px;
+    background-color: #16232A;
+    border-radius: 24px;
+    padding: 20px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .dlgTitle {
+    font-size: 24px;
+    color: #FFFFFF;
+    font-weight: bold;
+  }
+
+  .dlgSub {
+    font-size: 17px;
+    color: #93A2AA;
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  .dlgCount {
+    font-size: 44px;
+    color: #E74C3C;
+    margin-top: 6px;
+  }
+
+  .dlgRow {
+    flex-direction: row;
+    margin-top: 12px;
+  }
+
+  .dlgBtn {
+    width: 140px;
+    height: 60px;
+    border-radius: 16px;
+    justify-content: center;
+    align-items: center;
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+
+  .ghost {
+    background-color: #22303A;
+  }
+
+  .solid {
+    background-color: #1098AD;
+  }
+
+  .dlgGhostText {
+    font-size: 19px;
+    color: #A9B6BD;
+  }
+
+  .editRow {
+    height: 80px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .editBtn {
+    width: 56px;
+    height: 56px;
+    border-radius: 28px;
+    background-color: #1C262C;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .editTx {
+    font-size: 26px;
+    color: #E8EEF1;
+  }
+
+  .editVal {
+    font-size: 22px;
+    color: #FFFFFF;
+    font-weight: bold;
+    width: 120px;
+    text-align: center;
+  }
+
+  .dlgBtnLocked {
+    background-color: #23414A;
+  }
+
+  .dlgSolidText {
+    font-size: 19px;
+    color: #FFFFFF;
+    font-weight: bold;
+  }
+</style>
+
+<script>
+import storage from '@system.storage'
+import vibrator from '@system.vibrator'
+import router from '@system.router'
+import interconnect from '@system.interconnect'
+
+const PLAN_KEY = 'mw_plans'
+const DONE_KEY = 'mw_done'
+
+const DEFAULT_PLANS = []
+
+function pad2(n) {
+  return n < 10 ? '0' + n : '' + n
+}
+
+function dateKey(d) {
+  return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate())
+}
+
+function toMinutes(t) {
+  const parts = t.split(':')
+  return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10)
+}
+
+const WEEK = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+
+export default {
+  data: {
+    todayText: '',
+    remOn: false,
+    remSub: '',
+    editOn: false,
+    editName: '',
+    editCount: 0,
+    editLeft: 5,
+    editCanSave: false,
+    askOn: false,
+    askSub: '',
+    connTx: '未连接手机',
+    connCls: 'connOff',
+    connColor: '#7C8A92',
+    nextLabel: '下一顿',
+    nextName: '--',
+    nextMeta: '',
+    nextBtnText: '已服用',
+    nextBtnClass: '',
+    accentColor: '#1098AD',
+    pageBg: '#0E1214',
+    cardBg: '#16232A',
+    rowBg: '#141A1E',
+    btnBg: '#1098AD',
+    doneColor: '#55636B',
+    nextLabelColor: '#1098AD',
+    has0: false,
+    has1: false,
+    has2: false,
+    isEmpty: true,
+    p0n: '', p0m: '', p0c: '', p0cls: '', p0cColor: '#1098AD',
+    p1n: '', p1m: '', p1c: '', p1cls: '', p1cColor: '#1098AD',
+    p2n: '', p2m: '', p2c: '', p2cls: '', p2cColor: '#1098AD',
+    toast: '',
+    toastOn: false,
+    overlay: false,
+    overlayTitle: '',
+    overlaySub: '',
+    countdown: 5,
+    canConfirm: false
+  },
+
+  onInit() {
+    this.rawPlans = []
+    this.done = { date: '', counts: {} }
+    this.nextPlanId = ''
+    this.lastPlanId = ''
+    this.confirmPlanId = ''
+    this.askId = ''
+    this.editPlanId = ''
+    this.editedAt = 0
+    this.remPlanId = ''
+    this.remKey = ''
+    this.remTimer = null
+    this.timer = null
+    this.toastTimer = null
+    this.vibOn = true
+    this.loadVib()
+    this.loadTheme()
+    this.bootstrap()
+    this.bindPhone()
+    this.startTimeWatch()
+  },
+
+  onShow() {
+    this.loadVib()
+  },
+
+  onDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer)
+      this.timer = null
+    }
+    if (this.toastTimer) {
+      clearTimeout(this.toastTimer)
+      this.toastTimer = null
+    }
+  },
+
+  loadTheme() {
+    const that = this
+    storage.get({
+      key: 'mw_accent',
+      success: function (v) {
+        if (v && v.length >= 7) {
+          that.applyTheme(v)
+        }
+      },
+      fail: function () {
+      }
+    })
+  },
+
+  saveTheme(hex) {
+    try {
+      storage.set({ key: 'mw_accent', value: hex })
+    } catch (e) {
+    }
+  },
+
+  loadVib() {
+    const that = this
+    storage.get({
+      key: 'mw_vib',
+      success: function (v) {
+        that.vibOn = v !== '0'
+        globalThis.__vibOn = that.vibOn
+      },
+      fail: function () {
+        that.vibOn = true
+        globalThis.__vibOn = true
+      }
+    })
+  },
+
+  goSettings() {
+    router.push({
+      uri: '/pages/settings'
+    })
+  },
+
+  bindPhone() {
+    const that = this
+    try {
+      this.conn = interconnect.instance()
+      this.conn.onmessage = function (msg) {
+        let payload = null
+        try {
+          payload = typeof msg.data === 'string' ? JSON.parse(msg.data) : msg.data
+        } catch (e) {
+          payload = null
+        }
+        that.connTx = '已连接手机'
+        that.connCls = 'connOn'
+        that.connColor = that.accentColor
+        if (!payload) {
+          return
+        }
+        if (payload.tag === 'remind') {
+          that.showRemind('', payload.name || '该吃药了', payload.time || '')
+          return
+        }
+        if (payload.tag === 'pull') {
+          that.pushCounts()
+          return
+        }
+        if (payload.tag === 'theme') {
+          that.applyTheme(payload.color)
+          return
+        }
+        if (payload.tag !== 'plans' || !payload.plans) {
+          return
+        }
+        that.applyPlans(payload.plans, payload.color)
+      }
+      this.conn.onopen = function () {
+        that.connTx = '已连接手机'
+        that.connCls = 'connOn'
+        that.connColor = that.accentColor
+        try {
+          that.sendPhone({ tag: 'wantTheme' })
+        } catch (e) {
+        }
+      }
+      this.conn.onclose = function () {
+        that.connTx = '未连接手机'
+        that.connCls = 'connOff'
+        that.connColor = '#7C8A92'
+      }
+      this.conn.onerror = function () {
+        that.connTx = '未连接手机'
+        that.connCls = 'connOff'
+        that.connColor = '#7C8A92'
+      }
+    } catch (e) {
+      console.log('interconnect unavailable: ' + e)
+    }
+  },
+
+  applyTheme(hex) {
+    if (!hex || hex.length < 7) {
+      return
+    }
+    const r = parseInt(hex.substr(1, 2), 16)
+    const g = parseInt(hex.substr(3, 2), 16)
+    const b = parseInt(hex.substr(5, 2), 16)
+    if (isNaN(r) || isNaN(g) || isNaN(b)) {
+      return
+    }
+    const pad = function (v) {
+      const t = '' + Math.round(v).toString(16)
+      return t.length < 2 ? '0' + t : t
+    }
+    const shade = function (f) {
+      const c = function (v) {
+        const x = v * f
+        return x > 255 ? 255 : x
+      }
+      return '#' + pad(c(r)) + pad(c(g)) + pad(c(b))
+    }
+    this.accentColor = hex
+    this.saveTheme(hex)
+    this.nextLabelColor = hex
+    this.btnBg = hex
+    this.pageBg = shade(0.16)
+    this.cardBg = shade(0.30)
+    this.rowBg = shade(0.22)
+    if (this.rawPlans && this.rawPlans.length) {
+      this.applyPlans(this.rawPlans)
+    }
+  },
+
+  applyPlans(list, color) {
+    if (color) {
+      this.applyTheme(color)
+    }
+    const normalized = []
+    for (let i = 0; i < list.length; i++) {
+      const it = list[i] || {}
+      const times = []
+      const raw = it.times || []
+      for (let t = 0; t < raw.length; t++) {
+        if (typeof raw[t] === 'string') {
+          times.push(raw[t])
+        }
+      }
+      if (!times.length) {
+        continue
+      }
+      normalized.push({
+        id: it.id !== undefined && it.id !== null && it.id !== '' ? '' + it.id : ('p' + (i + 1)),
+        name: it.name || '药品',
+        dose: it.dose || '',
+        meal: it.meal || '',
+        purpose: it.purpose || '',
+        times: times,
+        today: typeof it.today === 'number' ? it.today : 0
+      })
+    }
+    if (!normalized.length) {
+      return
+    }
+    this.rawPlans = normalized
+    storage.set({
+      key: PLAN_KEY,
+      value: JSON.stringify(normalized)
+    })
+    const counts = (this.done && this.done.counts) ? this.done.counts : {}
+    for (let i = 0; i < normalized.length; i++) {
+      const p = normalized[i]
+      counts[p.id] = typeof p.today === 'number' ? p.today : 0
+    }
+    this.done.counts = counts
+    this.saveDone()
+    this.loadDone()
+    this.toast = '已同步 ' + normalized.length + ' 个计划'
+    this.toastOn = true
+    const that = this
+    if (this.toastTimer) {
+      clearTimeout(this.toastTimer)
+    }
+    this.toastTimer = setTimeout(function () {
+      that.toastOn = false
+    }, 1800)
+    this.buzz('short')
+  },
+
+  buzz(mode) {
+    const on = typeof globalThis.__vibOn === 'boolean' ? globalThis.__vibOn : this.vibOn
+    if (!on) {
+      return
+    }
+    vibrator.vibrate({ mode: mode === 'long' ? 'long' : (mode) })
+  },
+
+  bootstrap() {
+    const that = this
+    storage.get({
+      key: PLAN_KEY,
+      success: function (value) {
+        let plans = null
+        try {
+          plans = JSON.parse(value)
+        } catch (e) {
+          plans = null
+        }
+        if (!plans || !plans.length) {
+          plans = DEFAULT_PLANS
+        }
+        that.rawPlans = plans
+        that.loadDone()
+      },
+      fail: function () {
+        that.rawPlans = DEFAULT_PLANS
+        that.loadDone()
+      }
+    })
+  },
+
+  loadDone() {
+    const that = this
+    const today = dateKey(new Date())
+    storage.get({
+      key: DONE_KEY,
+      success: function (value) {
+        let done = null
+        try {
+          done = JSON.parse(value)
+        } catch (e) {
+          done = null
+        }
+        if (!done || done.date !== today) {
+          done = { date: today, counts: {} }
+        }
+        that.done = done
+        that.render()
+      },
+      fail: function () {
+        that.done = { date: today, counts: {} }
+        that.render()
+      }
+    })
+  },
+
+  saveDone() {
+    storage.set({
+      key: DONE_KEY,
+      value: JSON.stringify(this.done)
+    })
+  },
+
+  countOf(planId) {
+    const counts = this.done && this.done.counts ? this.done.counts : {}
+    const v = counts[planId]
+    return typeof v === 'number' ? v : 0
+  },
+
+  planById(planId) {
+    for (let i = 0; i < this.rawPlans.length; i++) {
+      if (this.rawPlans[i].id === planId) {
+        return this.rawPlans[i]
+      }
+    }
+    return null
+  },
+
+  render() {
+    const now = new Date()
+    this.todayText = (now.getMonth() + 1) + '月' + now.getDate() + '日 ' + WEEK[now.getDay()]
+
+    const nowMin = now.getHours() * 60 + now.getMinutes()
+
+    this.has0 = this.rawPlans.length > 0
+    this.has1 = this.rawPlans.length > 1
+    this.has2 = this.rawPlans.length > 2
+    this.isEmpty = this.rawPlans.length === 0
+
+    if (this.has0) {
+      const r = this.rowData(this.rawPlans[0])
+      this.p0n = r.name
+      this.p0m = r.meta
+      this.p0c = r.count
+      this.p0cls = r.cls
+      this.p0cColor = r.color
+    }
+    if (this.has1) {
+      const r = this.rowData(this.rawPlans[1])
+      this.p1n = r.name
+      this.p1m = r.meta
+      this.p1c = r.count
+      this.p1cls = r.cls
+      this.p1cColor = r.color
+    }
+    if (this.has2) {
+      const r = this.rowData(this.rawPlans[2])
+      this.p2n = r.name
+      this.p2m = r.meta
+      this.p2c = r.count
+      this.p2cls = r.cls
+      this.p2cColor = r.color
+    }
+
+    let futurePlanId = ''
+    let futureTime = ''
+    let futureMin = 100000
+    let pastPlanId = ''
+    let pastTime = ''
+    let pastMin = 100000
+    let earliestTime = ''
+    let earliestMin = 100000
+    let pendingCount = 0
+
+    for (let i = 0; i < this.rawPlans.length; i++) {
+      const p = this.rawPlans[i]
+      const times = p.times || []
+      const done = this.countOf(p.id)
+      if (times.length === 0) {
+        continue
+      }
+      if (done < times.length) {
+        pendingCount = pendingCount + 1
+        const nextTime = times[done]
+        const mins = toMinutes(nextTime)
+        if (mins >= nowMin) {
+          if (mins < futureMin) {
+            futureMin = mins
+            futureTime = nextTime
+            futurePlanId = p.id
+          }
+        } else {
+          if (mins < pastMin) {
+            pastMin = mins
+            pastTime = nextTime
+            pastPlanId = p.id
+          }
+        }
+      }
+      for (let j = 0; j < times.length; j++) {
+        const m = toMinutes(times[j])
+        if (m < earliestMin) {
+          earliestMin = m
+          earliestTime = times[j]
+        }
+      }
+    }
+
+    if (pendingCount > 0) {
+      let showPlanId = ''
+      let showTime = ''
+      let prefix = ''
+      if (futurePlanId !== '') {
+        showPlanId = futurePlanId
+        showTime = futureTime
+        prefix = '下一顿 · '
+      } else {
+        showPlanId = pastPlanId
+        showTime = pastTime
+        prefix = '该补记 · '
+      }
+      const plan = this.planById(showPlanId)
+      if (plan) {
+        this.nextPlanId = showPlanId
+        this.nextLabel = prefix + showTime
+        this.nextName = plan.name
+        this.nextMeta = (plan.dose || '') + ' · ' + (plan.meal || '') + ' · ' + (plan.purpose || '')
+        this.nextBtnText = '已服用'
+        this.nextBtnClass = ''
+      }
+    } else {
+      this.nextPlanId = ''
+      this.nextLabel = '今天都吃完了'
+      this.nextName = '明天 ' + (earliestTime === '' ? '--' : earliestTime)
+      this.nextMeta = '好好休息，明早记得吃'
+      this.nextBtnText = '不用再吃'
+      this.nextBtnClass = 'nextBtnGrey'
+    }
+  },
+
+  rowData(plan) {
+    const times = plan.times || []
+    const done = this.countOf(plan.id)
+    const total = times.length
+    let meta = ''
+    if (total === 0) {
+      meta = '未设置时间'
+    } else if (done >= total) {
+      meta = '今天已完成'
+    } else {
+      meta = times[done] + ' · ' + (plan.dose || '')
+    }
+    return {
+      name: plan.name,
+      meta: meta,
+      count: done + '/' + total,
+      cls: done >= total ? 'rowCountDone' : 'rowCount',
+      color: done >= total ? this.doneColor : this.accentColor
+    }
+  },
+
+  startTimeWatch() {
+    const that = this
+    if (this.remTimer) {
+      clearInterval(this.remTimer)
+    }
+    this.remTimer = setInterval(function () {
+      that.checkDue()
+    }, 20000)
+    this.checkDue()
+  },
+
+  checkDue() {
+    const now = new Date()
+    const nowMin = now.getHours() * 60 + now.getMinutes()
+    const key = dateKey(now) + ' ' + nowMin
+    for (let i = 0; i < this.rawPlans.length; i++) {
+      const p = this.rawPlans[i]
+      const done = this.countOf(p.id)
+      const times = p.times || []
+      if (done >= times.length) {
+        continue
+      }
+      const t = times[done]
+      if (!t) {
+        continue
+      }
+      if (toMinutes(t) === nowMin && this.remKey !== (p.id + key)) {
+        this.remKey = p.id + key
+        this.showRemind(p.id, p.name, t)
+        return
+      }
+    }
+  },
+
+  showRemind(planId, name, time) {
+    this.remPlanId = planId || ''
+    this.remSub = name + (time ? (' · ' + time) : '') + ' · 记一次'
+    this.remOn = true
+    const that = this
+    this.buzz('long')
+    setTimeout(function () { that.buzz('long') }, 1200)
+    setTimeout(function () { that.buzz('long') }, 2400)
+  },
+
+  remLater() {
+    this.remOn = false
+    this.remPlanId = ''
+  },
+
+  remTaken() {
+    const id = this.remPlanId
+    this.remOn = false
+    this.remPlanId = ''
+    if (!id) {
+      return
+    }
+    const plan = this.planById(id)
+    if (!plan) {
+      return
+    }
+    const total = (plan.times || []).length
+    const done = this.countOf(id)
+    if (done >= total) {
+      this.askOverflow(plan, done)
+      return
+    }
+    this.doTake(id)
+  },
+
+  pushCounts() {
+    const list = []
+    for (let i = 0; i < this.rawPlans.length; i++) {
+      const p = this.rawPlans[i]
+      list.push({ id: p.id, count: this.countOf(p.id) })
+    }
+    this.sendPhone({ tag: 'sync', counts: list })
+  },
+
+  sendPhone(obj) {
+    if (!this.conn) {
+      return
+    }
+    const that = this
+    try {
+      this.conn.send({
+        data: obj,
+        success: function () {
+          that.showToast('已同步到手机')
+        },
+        fail: function () {
+          that.showToast('没连上手机，记录已存在表上')
+        }
+      })
+    } catch (e) {
+      console.log('sendPhone fail: ' + e)
+    }
+  },
+
+  tapNext() {
+    if (this.ignoreTap()) {
+      return
+    }
+    if (this.nextPlanId === '') {
+      this.showToast('今天已经吃完了')
+      return
+    }
+    this.addOne(this.nextPlanId)
+  },
+
+  tap0() {
+    if (this.ignoreTap()) {
+      return
+    }
+    if (this.has0) {
+      this.addOne(this.rawPlans[0].id)
+    }
+  },
+
+  tap1() {
+    if (this.ignoreTap()) {
+      return
+    }
+    if (this.has1) {
+      this.addOne(this.rawPlans[1].id)
+    }
+  },
+
+  tap2() {
+    if (this.ignoreTap()) {
+      return
+    }
+    if (this.has2) {
+      this.addOne(this.rawPlans[2].id)
+    }
+  },
+
+  editNoop() {
+  },
+
+  ignoreTap() {
+    if (this.editOn || this.askOn || this.overlay) {
+      return true
+    }
+    if (this.editedAt && Date.now() - this.editedAt < 1200) {
+      return true
+    }
+    return false
+  },
+
+  long0() { this.editedAt = Date.now(); this.openEdit(0) },
+  long1() { this.editedAt = Date.now(); this.openEdit(1) },
+  long2() { this.editedAt = Date.now(); this.openEdit(2) },
+
+  openEdit(index) {
+    const plan = this.rawPlans[index]
+    if (!plan) {
+      return
+    }
+    this.editPlanId = plan.id
+    this.editName = plan.name
+    this.editCount = this.countOf(plan.id)
+    this.editLeft = 5
+    this.editCanSave = false
+    this.editOn = true
+    this.editedAt = Date.now()
+    this.buzz('short')
+    const that = this
+    if (this.editTimer) {
+      clearInterval(this.editTimer)
+    }
+    this.editTimer = setInterval(function () {
+      that.editLeft = that.editLeft - 1
+      if (that.editLeft <= 0) {
+        that.editLeft = 0
+        that.editCanSave = true
+        if (that.editTimer) {
+          clearInterval(that.editTimer)
+          that.editTimer = null
+        }
+      }
+    }, 1000)
+  },
+
+  editMinus() {
+    if (this.editCount > 0) {
+      this.editCount = this.editCount - 1
+      this.buzz('short')
+    }
+  },
+
+  editPlus() {
+    if (this.editCount < 12) {
+      this.editCount = this.editCount + 1
+      this.buzz('short')
+    }
+  },
+
+  editCancel() {
+    if (this.editTimer) {
+      clearInterval(this.editTimer)
+      this.editTimer = null
+    }
+    this.editOn = false
+    this.editPlanId = ''
+  },
+
+  editSave() {
+    if (!this.editCanSave) {
+      this.showToast('再等 ' + this.editLeft + ' 秒确认')
+      return
+    }
+    if (this.editTimer) {
+      clearInterval(this.editTimer)
+      this.editTimer = null
+    }
+    const planId = this.editPlanId
+    this.editOn = false
+    this.editPlanId = ''
+    if (!planId) {
+      return
+    }
+    const counts = this.done.counts || {}
+    counts[planId] = this.editCount
+    this.done.counts = counts
+    this.lastPlanId = planId
+    this.editedAt = Date.now()
+    this.saveDone()
+    this.sendPhone({ tag: 'sync', counts: [{ id: planId, count: this.editCount }] })
+    this.render()
+    this.showToast('已改成今天 ' + this.editCount + ' 次')
+  },
+
+  addOne(planId) {
+    const plan = this.planById(planId)
+    if (!plan) {
+      return
+    }
+    const done = this.countOf(planId)
+    const total = (plan.times || []).length
+    this.askId = planId
+    this.askSub = plan.name + ' · 今天已 ' + done + '/' + total
+    this.askOn = true
+    this.buzz('short')
+  },
+
+  askNo() {
+    this.askOn = false
+    this.askId = ''
+    this.buzz('short')
+  },
+
+  askYes() {
+    const planId = this.askId
+    this.askOn = false
+    this.askId = ''
+    if (!planId) {
+      return
+    }
+    const plan = this.planById(planId)
+    if (!plan) {
+      return
+    }
+    const total = (plan.times || []).length
+    const done = this.countOf(planId)
+    if (done >= total) {
+      this.askOverflow(plan, done)
+      return
+    }
+    this.doTake(planId)
+  },
+
+  doTake(planId) {
+    const plan = this.planById(planId)
+    if (!plan) {
+      return
+    }
+    const total = (plan.times || []).length
+    const done = this.countOf(planId)
+    const counts = this.done.counts || {}
+    counts[planId] = done + 1
+    this.done.counts = counts
+    this.lastPlanId = planId
+    this.saveDone()
+    this.sendPhone({ tag: 'taken', id: planId })
+    this.buzz('short')
+    this.render()
+    this.showToast('已记录一次 ' + (done + 1) + '/' + total)
+  },
+
+  askOverflow(plan, done) {
+    this.confirmPlanId = plan.id
+    this.overlayTitle = plan.name + ' 今天已 ' + done + ' 次'
+    this.overlaySub = '过量有风险，倒计时结束才能点确定'
+    this.countdown = 5
+    this.canConfirm = false
+    this.overlay = true
+    this.buzz('long')
+    if (this.timer) {
+      clearInterval(this.timer)
+    }
+    const that = this
+    this.timer = setInterval(function () {
+      that.countdown = that.countdown - 1
+      if (that.countdown <= 0) {
+        that.countdown = 0
+        that.canConfirm = true
+        that.overlaySub = '可以确认了，点「确定再吃」'
+        if (that.timer) {
+          clearInterval(that.timer)
+          that.timer = null
+        }
+      }
+    }, 1000)
+  },
+
+  maskNoop() {
+  },
+
+  maskTap() {
+    if (!this.canConfirm) {
+      this.cancelOverflow()
+    }
+  },
+
+  cancelOverflow() {
+    if (this.timer) {
+      clearInterval(this.timer)
+      this.timer = null
+    }
+    this.overlay = false
+    this.confirmPlanId = ''
+    this.canConfirm = false
+  },
+
+  confirmOverflow() {
+    if (!this.canConfirm) {
+      this.showToast('等 ' + this.countdown + ' 秒，别着急')
+      return
+    }
+    const planId = this.confirmPlanId
+    if (this.timer) {
+      clearInterval(this.timer)
+      this.timer = null
+    }
+    this.overlay = false
+    if (!planId) {
+      return
+    }
+    const plan = this.planById(planId)
+    const total = plan ? (plan.times || []).length : 0
+    const done = this.countOf(planId)
+    const counts = this.done.counts || {}
+    counts[planId] = done + 1
+    this.done.counts = counts
+    this.lastPlanId = planId
+    this.confirmPlanId = ''
+    this.saveDone()
+    this.sendPhone({ tag: 'taken', id: planId })
+    this.buzz('short')
+    this.render()
+    this.showToast('已记录第 ' + (done + 1) + ' 次（超出计划）')
+  },
+
+  undo() {
+    let target = ''
+    if (this.lastPlanId !== '' && this.countOf(this.lastPlanId) > 0) {
+      target = this.lastPlanId
+    } else {
+      for (let i = 0; i < this.rawPlans.length; i++) {
+        if (this.countOf(this.rawPlans[i].id) > 0) {
+          target = this.rawPlans[i].id
+          break
+        }
+      }
+    }
+    if (target === '') {
+      this.showToast('没有可撤销的记录')
+      return
+    }
+    const counts = this.done.counts || {}
+    counts[target] = this.countOf(target) - 1
+    this.done.counts = counts
+    if (this.lastPlanId === target && counts[target] <= 0) {
+      this.lastPlanId = ''
+    }
+    this.saveDone()
+    this.sendPhone({ tag: 'undo', id: target })
+    this.buzz('short')
+    this.render()
+    this.showToast('已撤销一次')
+  },
+
+  showToast(msg) {
+    this.toast = msg
+    this.toastOn = true
+    if (this.toastTimer) {
+      clearTimeout(this.toastTimer)
+    }
+    const that = this
+    this.toastTimer = setTimeout(function () {
+      that.toastOn = false
+      that.toastTimer = null
+    }, 2000)
+  }
+}
+</script>

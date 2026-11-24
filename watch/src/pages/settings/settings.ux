@@ -1,0 +1,636 @@
+<template>
+  <div class="page" style="background-color: {{pageBg}}">
+    <div class="hd">
+      <div class="back" onclick="back">
+        <text class="backTx">返回</text>
+      </div>
+      <text class="hdTitle">设置</text>
+    </div>
+
+    <div class="card" style="background-color: {{cardBg}}">
+      <text class="cardTitle">震动提醒</text>
+      <div class="switch {{vibOn ? 'switchOn' : ''}}" onclick="toggleVib">
+        <text class="switchTx">{{vibTx}}</text>
+      </div>
+    </div>
+
+    <div class="syncCard" style="background-color: {{accentColor}}" onclick="pushNow">
+      <text class="syncTx">同步到手机端</text>
+    </div>
+
+
+    <div class="syncCard" style="background-color: {{accentColor}}" onclick="goPlans">
+      <text class="syncTx">管理每个计划的次数</text>
+    </div>
+
+    <div class="card" style="background-color: {{cardBg}}">
+      <text class="cardTitle">今日打卡次数</text>
+      <div class="miniBtn" onclick="resetDone">
+        <text class="miniTx">清零</text>
+      </div>
+    </div>
+
+    <div class="about">
+      <text class="aboutTitle">吃药提醒 · 手表端</text>
+      <text class="aboutLine">版本 1.20　　作者 萧茂蜜呀</text>
+      <text class="aboutLine">B 站同名 · 手机端负责提醒，表上负责看和打卡</text>
+    </div>
+
+    <div class="reset" onclick="resetAll">
+      <text class="resetTx">恢复默认计划</text>
+    </div>
+
+    <text class="hint">时间点只能在手机端改，表上改不了</text>
+
+    <div class="toast" if="{{toastOn}}">
+      <text class="toastText">{{tx}}</text>
+    </div>
+  </div>
+</template>
+
+<style>
+  .body {
+    width: 400px;
+    height: 452px;
+  }
+
+  .page {
+    width: 432px;
+    height: 514px;
+    background-color: #0E1214;
+    padding: 14px 16px;
+    flex-direction: column;
+  }
+
+  .hd {
+    height: 44px;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .back {
+    height: 34px;
+    padding: 0 14px;
+    background-color: #1C262C;
+    border-radius: 17px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .backTx {
+    font-size: 16px;
+    color: #8FA0A8;
+  }
+
+  .hdTitle {
+    font-size: 24px;
+    color: #F2F5F7;
+    font-weight: bold;
+    margin-left: 14px;
+  }
+
+  .card {
+    height: 62px;
+    background-color: #16232A;
+    border-radius: 18px;
+    margin-top: 10px;
+    padding: 0 16px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .cardTitle {
+    font-size: 19px;
+    color: #E8EEF1;
+  }
+
+  .switch {
+    width: 72px;
+    height: 34px;
+    border-radius: 17px;
+    background-color: #2B363C;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .switchOn {
+    background-color: #1098AD;
+  }
+
+  .syncCard {
+    height: 62px;
+    margin-top: 10px;
+    background-color: #1098AD;
+    border-radius: 18px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .syncTx {
+    font-size: 19px;
+    color: #FFFFFF;
+    font-weight: bold;
+  }
+
+  .miniBtn {
+    height: 34px;
+    padding: 0 18px;
+    border-radius: 17px;
+    border-width: 1px;
+    border-color: #D9534F;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .miniTx {
+    font-size: 15px;
+    color: #D9534F;
+  }
+
+  .about {
+    margin-top: 12px;
+    padding: 12px 14px;
+    background-color: #16232A;
+    border-radius: 18px;
+    flex-direction: column;
+  }
+
+  .toast {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    height: 46px;
+    background-color: #1098AD;
+    border-radius: 14px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .toastText {
+    font-size: 16px;
+    color: #FFFFFF;
+  }
+
+  .aboutTitle {
+    font-size: 17px;
+    color: #E8EEF1;
+    font-weight: bold;
+  }
+
+  .aboutLine {
+    font-size: 14px;
+    color: #7C8A92;
+    margin-top: 4px;
+  }
+
+  .switchTx {
+    font-size: 15px;
+    color: #FFFFFF;
+  }
+
+  .planCard2 {
+    margin-top: 10px;
+    padding: 12px 14px 10px 14px;
+    background-color: #141A1E;
+    border-radius: 18px;
+    flex-direction: column;
+  }
+
+  .pcTop {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .pcName {
+    font-size: 19px;
+    color: #E8EEF1;
+    font-weight: bold;
+  }
+
+  .pcCount {
+    font-size: 16px;
+    color: #9FB0B8;
+  }
+
+  .pcTimes {
+    font-size: 14px;
+    color: #7C8A92;
+    margin-top: 4px;
+  }
+
+  .pcBtns {
+    flex-direction: row;
+    margin-top: 10px;
+  }
+
+  .pcBtn {
+    flex: 1;
+    height: 46px;
+    margin-right: 8px;
+    border-radius: 14px;
+    background-color: #1E2A31;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .pcBtnAccent {
+    background-color: #1098AD;
+    margin-right: 0;
+  }
+
+  .pcBtnTx {
+    font-size: 17px;
+    color: #FFFFFF;
+  }
+
+  .planCard {
+    height: 86px;
+    background-color: #141A1E;
+    border-radius: 18px;
+    margin-top: 10px;
+    padding: 10px 16px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .planHd {
+    flex-direction: column;
+  }
+
+  .planName {
+    font-size: 19px;
+    color: #E8EEF1;
+  }
+
+  .planTimes {
+    font-size: 15px;
+    color: #7C8A92;
+    margin-top: 6px;
+  }
+
+  .stepper {
+    width: 200px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .stepBtn {
+    width: 56px;
+    height: 44px;
+    border-radius: 22px;
+    background-color: #1E2A31;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .planHd {
+    flex: 1;
+    flex-direction: column;
+    margin-right: 8px;
+  }
+
+  .stepVal {
+    width: 64px;
+    text-align: center;
+  }
+
+  .stepTx {
+    font-size: 22px;
+    color: #1098AD;
+    font-weight: bold;
+  }
+
+  .stepVal {
+    width: 74px;
+    font-size: 17px;
+    color: #FFFFFF;
+    text-align: center;
+  }
+
+  .reset {
+    height: 44px;
+    border-width: 2px;
+    border-color: #C0392B;
+    border-radius: 22px;
+    margin-top: 12px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .resetTx {
+    font-size: 16px;
+    color: #E74C3C;
+  }
+
+  .hint {
+    font-size: 14px;
+    color: #55636B;
+    margin-top: 8px;
+    text-align: center;
+  }
+</style>
+
+<script>
+import storage from '@system.storage'
+import vibrator from '@system.vibrator'
+import router from '@system.router'
+import interconnect from '@system.interconnect'
+
+const PLAN_KEY = 'mw_plans'
+const VIB_KEY = 'mw_vib'
+
+const DEFAULT_PLANS = []
+
+function timeToMin(t) {
+  const a = t.split(':')
+  return parseInt(a[0], 10) * 60 + parseInt(a[1], 10)
+}
+
+function minToTime(m) {
+  if (m > 1435) {
+    m = 1435
+  }
+  return pad2(Math.floor(m / 60)) + ':' + pad2(m % 60)
+}
+
+export default {
+  data: {
+    accentColor: '#1098AD',
+    pageBg: '#0E1214',
+    cardBg: '#1C262C',
+    innerBg: '#16232A',
+    rowBg: '#141A1E',
+    vibOn: true,
+    vibTx: '开',
+    toastOn: false,
+    tx: '',
+    has0: false,
+    has1: false,
+    has2: false,
+    q0n: '', q0t: '', q0c: '',
+    q1n: '', q1t: '', q1c: '',
+    q2n: '', q2t: '', q2c: ''
+  },
+
+  loadTheme() {
+    const that = this
+    try {
+      storage.get({
+        key: 'mw_accent',
+        success: function (v) {
+          if (v && v.length >= 7) {
+            that.applyTheme(v)
+          }
+        },
+        fail: function () {
+        }
+      })
+    } catch (e) {
+    }
+  },
+
+  applyTheme(hex) {
+    const r = parseInt(hex.substr(1, 2), 16)
+    const g = parseInt(hex.substr(3, 2), 16)
+    const b = parseInt(hex.substr(5, 2), 16)
+    if (isNaN(r) || isNaN(g) || isNaN(b)) {
+      return
+    }
+    const pad = function (v) {
+      const t = '' + Math.round(v).toString(16)
+      return t.length < 2 ? '0' + t : t
+    }
+    const shade = function (f) {
+      const c = function (v) {
+        const x = v * f
+        return x > 255 ? 255 : x
+      }
+      return '#' + pad(c(r)) + pad(c(g)) + pad(c(b))
+    }
+    this.accentColor = hex
+    this.pageBg = shade(0.16)
+    this.cardBg = shade(0.30)
+    this.innerBg = shade(0.26)
+    this.rowBg = shade(0.22)
+  },
+
+  onInit() {
+    this.loadTheme()
+    this.rawPlans = []
+    try {
+      this.conn = interconnect.instance()
+    } catch (e) {
+      this.conn = null
+    }
+    this.toastOn = false
+    this.tx = ''
+    this.load()
+  },
+
+  load() {
+    const that = this
+    storage.get({
+      key: VIB_KEY,
+      success: function (v) {
+        that.vibOn = v !== '0'
+        that.vibTx = that.vibOn ? '开' : '关'
+      },
+      fail: function () {
+        that.vibOn = true
+        that.vibTx = '开'
+      }
+    })
+    storage.get({
+      key: PLAN_KEY,
+      success: function (v) {
+        let plans = null
+        try {
+          plans = JSON.parse(v)
+        } catch (e) {
+          plans = null
+        }
+        if (!plans || !plans.length) {
+          plans = DEFAULT_PLANS
+        }
+        that.rawPlans = plans
+        that.render()
+      },
+      fail: function () {
+        that.rawPlans = DEFAULT_PLANS
+        that.render()
+      }
+    })
+  },
+
+  render() {
+    this.has0 = this.rawPlans.length > 0
+    this.has1 = this.rawPlans.length > 1
+    this.has2 = this.rawPlans.length > 2
+    if (this.has0) {
+      this.q0n = this.rawPlans[0].name
+      this.q0t = (this.rawPlans[0].times || []).join(' / ')
+      this.q0c = (this.rawPlans[0].times || []).length
+    }
+    if (this.has1) {
+      this.q1n = this.rawPlans[1].name
+      this.q1t = (this.rawPlans[1].times || []).join(' / ')
+      this.q1c = (this.rawPlans[1].times || []).length
+    }
+    if (this.has2) {
+      this.q2n = this.rawPlans[2].name
+      this.q2t = (this.rawPlans[2].times || []).join(' / ')
+      this.q2c = (this.rawPlans[2].times || []).length
+    }
+  },
+
+  save() {
+    storage.set({
+      key: PLAN_KEY,
+      value: JSON.stringify(this.rawPlans)
+    })
+  },
+
+  back() {
+    router.back()
+  },
+
+  goPlans() {
+    router.push({ uri: '/pages/plans' })
+  },
+
+  pushNow() {
+    const that = this
+    if (!this.conn) {
+      this.tx = '手表和手机没有连上'
+      this.toastOn = true
+      setTimeout(function () { that.toastOn = false }, 1600)
+      return
+    }
+    storage.get({
+      key: 'mw_done',
+      success: function (value) {
+        let done = null
+        try {
+          done = JSON.parse(value)
+        } catch (e) {
+          done = null
+        }
+        const counts = done && done.counts ? done.counts : {}
+        const list = []
+        for (let i = 0; i < that.rawPlans.length; i++) {
+          const id = that.rawPlans[i].id
+          const c = counts[id]
+          list.push({ id: id, count: typeof c === 'number' ? c : 0 })
+        }
+        try {
+          that.conn.send({
+            data: { tag: 'sync', counts: list },
+            success: function () {},
+            fail: function () {}
+          })
+        } catch (e) {
+          console.log('push fail ' + e)
+        }
+        that.tx = '已把今天的次数发给手机'
+        that.toastOn = true
+        setTimeout(function () { that.toastOn = false }, 1600)
+        vibrator.vibrate({ mode: 'short' })
+      }
+    })
+  },
+
+  resetDone() {
+    storage.set({ key: 'mw_done', value: '{"date":"","counts":{}}' })
+    this.tx = '今日打卡已清零'
+    this.toastOn = true
+    const that = this
+    setTimeout(function () {
+      that.toastOn = false
+    }, 1600)
+    vibrator.vibrate({ mode: 'short' })
+  },
+
+  toggleVib() {
+    this.vibOn = !this.vibOn
+    this.vibTx = this.vibOn ? '开' : '关'
+    globalThis.__vibOn = this.vibOn
+    storage.set({ key: VIB_KEY, value: this.vibOn ? '1' : '0' })
+    if (this.vibOn) {
+      vibrator.vibrate({ mode: 'short' })
+    }
+  },
+
+  addTime(index) {
+    const plan = this.rawPlans[index]
+    if (!plan) {
+      return
+    }
+    const times = plan.times || []
+    if (times.length >= 12) {
+      this.tx = '最多 12 次，请到手机端调整'
+      this.toastOn = true
+      const that = this
+      setTimeout(function () { that.toastOn = false }, 1600)
+      return
+    }
+    let t = times.length > 0 ? timeToMin(times[times.length - 1]) + 240 : 480
+    // 避开重复时间点
+    let guard = 0
+    while (times.indexOf(minToTime(t)) >= 0 && guard < 20) {
+      t = t + 60
+      guard++
+    }
+    if (t > 1435) {
+      this.tx = '时间已排到 23:55，请到手机端调整'
+      this.toastOn = true
+      const that2 = this
+      setTimeout(function () { that2.toastOn = false }, 1600)
+      return
+    }
+    times.push(minToTime(t))
+    plan.times = times
+    this.save()
+    this.render()
+    this.tx = '已加到 ' + times.length + ' 次'
+    this.toastOn = true
+    const that3 = this
+    setTimeout(function () { that3.toastOn = false }, 1400)
+    vibrator.vibrate({ mode: 'short' })
+  },
+
+  delTime(index) {
+    const plan = this.rawPlans[index]
+    if (!plan) {
+      return
+    }
+    const times = plan.times || []
+    if (times.length <= 1) {
+      return
+    }
+    const removed = times.pop()
+    plan.times = times
+    this.save()
+    this.render()
+    this.tip('已减一次：' + removed)
+  },
+
+  plus0() { this.addTime(0) },
+  plus1() { this.addTime(1) },
+  plus2() { this.addTime(2) },
+  minus0() { this.delTime(0) },
+  minus1() { this.delTime(1) },
+  minus2() { this.delTime(2) },
+
+  resetAll() {
+    this.rawPlans = JSON.parse(JSON.stringify(DEFAULT_PLANS))
+    this.save()
+    this.render()
+    vibrator.vibrate({ mode: 'short' })
+  }
+}
+</script>

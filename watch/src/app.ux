@@ -1,0 +1,10 @@
+<script>
+export default {
+  onCreate() {
+    console.log('medwatch app created')
+  },
+  onDestroy() {
+    console.log('medwatch app destroyed')
+  }
+}
+</script>
