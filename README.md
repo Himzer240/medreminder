@@ -10,33 +10,32 @@
     <img src="https://img.shields.io/badge/%F0%9F%8C%90%20%E7%BD%91%E9%A1%B5%E7%89%88-%E6%89%93%E5%BC%80-0f9d7a?style=for-the-badge" alt="网页版下载页">
   </a>
   &nbsp;
-  <a href="https://aka.doubaocdn.com/s/083wedR9iW">
-    <img src="https://img.shields.io/badge/%E2%AC%87%EF%B8%8F%20%E4%B8%8B%E8%BD%BD%E6%9C%80%E6%96%B0%E7%89%88-v8.23.2-1b1f27?style=for-the-badge" alt="下载最新版 v8.23.2">
+  <a href="https://aka.doubaocdn.com/s/ktR9EXjUG6">
+    <img src="https://img.shields.io/badge/%E2%AC%87%EF%B8%8F%20%E4%B8%8B%E8%BD%BD%E6%9C%80%E6%96%B0%E7%89%88-v8.24.0-1b1f27?style=for-the-badge" alt="下载最新版 v8.24.0">
   </a>
 </p>
 
 ---
 
-## 当前版本：v8.23.2（versionCode 113）
+## 当前版本：v8.24.0（versionCode 114）
 
-- 疑惑问答页整页跟随主题色，设置页的问答按钮也修好了
-- 检查更新先扫下载目录，有高版本包直接装
-- 主题色预设 24 个
+- 每次回到前台自动检查更新，没更新就不弹，有更新弹窗关不掉，只有「更新」「不更新」两个按钮
+- 疑惑问答页整页跟主题色，主题色 24 个
 
-**下载：** [吃药提醒-v8.23.2.apk](https://aka.doubaocdn.com/s/083wedR9iW)
+**下载：** [吃药提醒-v8.24.0.apk](https://aka.doubaocdn.com/s/ktR9EXjUG6)
 
 ## 历史版本
 
 | 版本 | 说明 | 下载 |
 | --- | --- | --- |
+| v8.24.0 | 前台自动检查更新 | [下载](https://aka.doubaocdn.com/s/ktR9EXjUG6) |
 | v8.23.2 | 问答页整页跟主题色 | [下载](https://aka.doubaocdn.com/s/083wedR9iW) |
 | v8.23.1 | 检查更新先查下载目录 | [下载](https://aka.doubaocdn.com/s/Qv1kVrtwm4) |
 | v8.23.0 | 主题色预设加到 24 个 | [下载](https://aka.doubaocdn.com/s/TjevNPoPkE) |
-| v8.22.0 | 检查更新（GitHub） | [下载](https://aka.doubaocdn.com/s/gMXmjbdVPp) |
 
 ## 关于更新
 
-打开 App → 设置 → **检查更新**：先看本地下载目录里有没有更高的包，有就直接装；没有才去仓库对版本号。
+打开 App 就会自动查：有新版弹窗两条路，要么更新、要么不更新（选不更新会记住，同一版不再麻烦你）。
 
 ## 目录
 
