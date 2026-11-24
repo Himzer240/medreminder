@@ -1,13 +1,13 @@
 {
-  "versionCode": 112,
-  "versionName": "8.23.1",
-  "url": "https://aka.doubaocdn.com/s/Qv1kVrtwm4",
-  "note": "检查更新会先扫下载目录，里面有更高版本的包就直接安装，不用重新下载",
+  "versionCode": 113,
+  "versionName": "8.23.2",
+  "url": "https://aka.doubaocdn.com/s/083wedR9iW",
+  "note": "疑惑问答页整页跟主题色，设置页的问答按钮也修好了",
   "history": [
+    { "version": "8.23.2", "note": "问答页整页跟主题色", "url": "https://aka.doubaocdn.com/s/083wedR9iW" },
     { "version": "8.23.1", "note": "检查更新先查下载目录", "url": "https://aka.doubaocdn.com/s/Qv1kVrtwm4" },
     { "version": "8.23.0", "note": "主题色预设加到 24 个", "url": "https://aka.doubaocdn.com/s/TjevNPoPkE" },
     { "version": "8.22.0", "note": "检查更新（GitHub）", "url": "https://aka.doubaocdn.com/s/gMXmjbdVPp" },
-    { "version": "8.21.1", "note": "问答加「为什么只有小米手表」", "url": "https://aka.doubaocdn.com/s/UH2c2qUEZo" },
-    { "version": "8.20.6", "note": "问答回答口语化", "url": "https://aka.doubaocdn.com/s/5LVmHgLnyA" }
+    { "version": "8.21.1", "note": "问答加「为什么只有小米手表」", "url": "https://aka.doubaocdn.com/s/UH2c2qUEZo" }
   ]
 }

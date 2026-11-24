@@ -10,32 +10,33 @@
     <img src="https://img.shields.io/badge/%F0%9F%8C%90%20%E7%BD%91%E9%A1%B5%E7%89%88-%E6%89%93%E5%BC%80-0f9d7a?style=for-the-badge" alt="网页版下载页">
   </a>
   &nbsp;
-  <a href="https://aka.doubaocdn.com/s/Qv1kVrtwm4">
-    <img src="https://img.shields.io/badge/%E2%AC%87%EF%B8%8F%20%E4%B8%8B%E8%BD%BD%E6%9C%80%E6%96%B0%E7%89%88-v8.23.1-1b1f27?style=for-the-badge" alt="下载最新版 v8.23.1">
+  <a href="https://aka.doubaocdn.com/s/083wedR9iW">
+    <img src="https://img.shields.io/badge/%E2%AC%87%EF%B8%8F%20%E4%B8%8B%E8%BD%BD%E6%9C%80%E6%96%B0%E7%89%88-v8.23.2-1b1f27?style=for-the-badge" alt="下载最新版 v8.23.2">
   </a>
 </p>
 
 ---
 
-## 当前版本：v8.23.1（versionCode 112）
+## 当前版本：v8.23.2（versionCode 113）
 
-- 检查更新先扫下载目录：里面已有高版本的包就直接装，不用重新下载；多个包时选版本号最高的
-- 主题色预设 24 个，色卡 5 个一行
+- 疑惑问答页整页跟随主题色，设置页的问答按钮也修好了
+- 检查更新先扫下载目录，有高版本包直接装
+- 主题色预设 24 个
 
-**下载：** [吃药提醒-v8.23.1.apk](https://aka.doubaocdn.com/s/Qv1kVrtwm4)
+**下载：** [吃药提醒-v8.23.2.apk](https://aka.doubaocdn.com/s/083wedR9iW)
 
 ## 历史版本
 
 | 版本 | 说明 | 下载 |
 | --- | --- | --- |
+| v8.23.2 | 问答页整页跟主题色 | [下载](https://aka.doubaocdn.com/s/083wedR9iW) |
 | v8.23.1 | 检查更新先查下载目录 | [下载](https://aka.doubaocdn.com/s/Qv1kVrtwm4) |
 | v8.23.0 | 主题色预设加到 24 个 | [下载](https://aka.doubaocdn.com/s/TjevNPoPkE) |
 | v8.22.0 | 检查更新（GitHub） | [下载](https://aka.doubaocdn.com/s/gMXmjbdVPp) |
-| v8.21.1 | 问答加「为什么只有小米手表」 | [下载](https://aka.doubaocdn.com/s/UH2c2qUEZo) |
 
 ## 关于更新
 
-打开 App → 设置 → **检查更新**：先看本地下载目录里有没有更高的包，有就直接装；没有才去本仓库对版本号。
+打开 App → 设置 → **检查更新**：先看本地下载目录里有没有更高的包，有就直接装；没有才去仓库对版本号。
 
 ## 目录
 
