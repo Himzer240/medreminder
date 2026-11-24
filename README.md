@@ -1,19 +1,52 @@
-# 吃药提醒（MedReminder）
+# 吃药提醒 · 下载页
 
-> **说明：本仓库的内容（版本包、更新日志、更新配置）都由 AI 助手代为发布和维护，不是账号主人本人在线发布或回复。**
-> 账号主人不常上 GitHub，这里只作为 App「检查更新」的取数地址和发版存档，Issue / PR 不保证会有人处理。
+<p align="center">
+  <b>小米手表配套的吃药提醒 App</b><br>
+  手机端管理药品与提醒，手表端到点震动提醒
+</p>
 
-小米手表配套的吃药提醒 App，手机端（com.doubao.medreminder）+ 手表端小程序。
+<p align="center">
+  <a href="https://aka.doubaocdn.com/s/gMXmjbdVPp">
+    <img src="https://img.shields.io/badge/%E2%AC%87%EF%B8%8F%20%E4%B8%8B%E8%BD%BD%E6%9C%80%E6%96%B0%E7%89%88-v8.22.0-0f9d7a?style=for-the-badge" alt="下载最新版 v8.22.0">
+  </a>
+  &nbsp;
+  <a href="https://github.com/Himzer240/medreminder/blob/main/CHANGELOG.md">
+    <img src="https://img.shields.io/badge/%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97-%E6%9F%A5%E7%9C%8B-1b1f27?style=for-the-badge" alt="更新日志">
+  </a>
+</p>
 
-## 版本与更新
+---
 
-- 最新版：v8.22.0（versionCode 110）
-- 检查更新的元数据在 `updates/version.json`，App 里的「设置 → 检查更新」会读这个文件，比对 versionCode，有新包就下载并跳到系统安装器。
-- 字段说明：`versionCode` 整数、`versionName` 字符串、`url` 直接指向 APK 地址、`note` 更新说明。
+## 当前版本：v8.22.0（versionCode 110）
+
+- 设置页新增「检查更新」：从本仓库 `updates/version.json` 读版本号，有新包就下载并跳系统安装器
+- 疑惑问答改成点一下展开答案，每题配了跳转按钮
+- 下拉刷新阈值、持续震动、混乱模式等改动均已包含
+
+**下载：** [吃药提醒-v8.22.0.apk](https://aka.doubaocdn.com/s/gMXmjbdVPp)
+
+## 历史版本
+
+| 版本 | 说明 | 下载 |
+| --- | --- | --- |
+| v8.22.0 | 检查更新（GitHub） | [下载](https://aka.doubaocdn.com/s/gMXmjbdVPp) |
+| v8.21.1 | 问答加「为什么只有小米手表」 | [下载](https://aka.doubaocdn.com/s/UH2c2qUEZo) |
+| v8.20.6 | 问答回答口语化 | [下载](https://aka.doubaocdn.com/s/5LVmHgLnyA) |
+| v8.20.2 | 问答改点开展开 | [下载](https://aka.doubaocdn.com/s/6jprOCkyan) |
+
+## 关于更新
+
+手机里已经装了新版的话，不用回来这里找包：打开 App → 设置 → **检查更新**，它会自己去本仓库比对版本，有新版直接下载安装。
 
 ## 目录
 
-- `updates/version.json` —— 最新版本信息（每次发版都要改这里）
-- `CHANGELOG.md` —— 更新日志
+- `updates/version.json` —— 最新版本信息（每次发版都改这里）
+- `CHANGELOG.md` —— 完整更新日志
+- `docs/index.html` —— 网页版下载页源文件
 
-发版流程：改完代码 → 打包签名 → 上传 APK → 把 `updates/version.json` 里的版本号和 url 换成新的（由 AI 助手完成）。
+## 说明
+
+> **本仓库的内容（版本包、更新日志、版本信息）都由 AI 助手代为发布和维护，不是账号主人本人在线发布或回复。**
+> 账号主人不常上 GitHub，这里只作为 App「检查更新」的取数地址和发版存档，Issue / PR 不保证会有人处理。
+
+仅供个人使用。
