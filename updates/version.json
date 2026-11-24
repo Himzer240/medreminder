@@ -1,13 +1,13 @@
 {
-  "versionCode": 120,
-  "versionName": "8.24.6",
-  "url": "https://aka.doubaocdn.com/s/Co6i6iyVEZ",
+  "versionCode": 121,
+  "versionName": "8.24.7",
+  "url": "https://aka.doubaocdn.com/s/FJ8JmTUWBU",
   "watch": "https://aka.doubaocdn.com/s/ULV3CkVOdt",
-  "note": "手机端「手表端设置」页背景跟主题色（补上漏掉的 pageBg）",
+  "note": "去掉进应用的手表未连接提示；手表图标固定红色；未连接时多一个重连按钮",
   "history": [
+    { "version": "8.24.7", "note": "顶栏手表图标红色 + 断线重连按钮", "url": "https://aka.doubaocdn.com/s/FJ8JmTUWBU" },
     { "version": "8.24.6", "note": "手表设置页背景跟主题色", "url": "https://aka.doubaocdn.com/s/Co6i6iyVEZ" },
     { "version": "8.24.5", "note": "手表背景色真正同步", "url": "https://aka.doubaocdn.com/s/teS8Hyt7wR" },
-    { "version": "8.24.4", "note": "步骤说明同步改名", "url": "https://aka.doubaocdn.com/s/fvf3oICSOS" },
-    { "version": "8.24.3", "note": "改名「安装手表端」", "url": "https://aka.doubaocdn.com/s/MGpQlwKpmr" }
+    { "version": "8.24.4", "note": "步骤说明同步改名", "url": "https://aka.doubaocdn.com/s/fvf3oICSOS" }
   ]
 }
