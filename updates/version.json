@@ -1,13 +1,13 @@
 {
-  "versionCode": 116,
-  "versionName": "8.24.2",
-  "url": "https://aka.doubaocdn.com/s/FtnXfnScgr",
+  "versionCode": 117,
+  "versionName": "8.24.3",
+  "url": "https://aka.doubaocdn.com/s/MGpQlwKpmr",
   "watch": "https://aka.doubaocdn.com/s/lN2LEhbQdg",
-  "note": "主题色同步到手表端；手表端 1.18 包一并更新",
+  "note": "手表管理页改名「安装手表端」，点击直接弹系统选择框装到手表",
   "history": [
+    { "version": "8.24.3", "note": "改名「安装手表端」", "url": "https://aka.doubaocdn.com/s/MGpQlwKpmr" },
     { "version": "8.24.2", "note": "主题色同步到手表端", "url": "https://aka.doubaocdn.com/s/FtnXfnScgr" },
     { "version": "8.24.1", "note": "检查更新带动画提示", "url": "https://aka.doubaocdn.com/s/BQp49nPyr3" },
-    { "version": "8.24.0", "note": "前台自动检查更新", "url": "https://aka.doubaocdn.com/s/ktR9EXjUG6" },
-    { "version": "8.23.2", "note": "问答页整页跟主题色", "url": "https://aka.doubaocdn.com/s/083wedR9iW" }
+    { "version": "8.24.0", "note": "前台自动检查更新", "url": "https://aka.doubaocdn.com/s/ktR9EXjUG6" }
   ]
 }
