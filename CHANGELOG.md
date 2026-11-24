@@ -1,5 +1,9 @@
 # 更新日志
 
+## v8.25.7（versionCode 130）
+- 手表端页面：没连上手表时，「打开小米运动健康」保持可用（不再变灰）；不打开它手表就连不上
+- 其余按钮（下载表端、安装手表端）在未连接时仍然灰化不可点
+
 ## v8.25.6（versionCode 129）
 - 版本信息改从 gh-proxy 代理读 GitHub raw：jsDelivr 对分支缓存太久，发新版后 App 要半天才看到
 - 四个地址依次重试：ghproxy.net → gh-proxy.com → jsDelivr → raw
