@@ -128,14 +128,19 @@
     sd.disabled=true; sd.textContent="发送中…"; mg.className="fb-msg"; mg.textContent="";
     var title="【反馈】"+text.slice(0,30).replace(/\n/g," ");
     var body="**称呼：** "+name+"\n\n**内容：**\n"+text+"\n\n---\n提交时间："+new Date().toLocaleString("zh-CN")+"\n来自：下载页反馈入口";
-    fetch("https://api.github.com/repos/Himzer240/medreminder/issues",{
-      method:"POST",
-      headers:{ "Authorization":"Bearer "+tok(), "Accept":"application/vnd.github+json", "Content-Type":"application/json" },
-      body:JSON.stringify({ title:title, body:body, labels:["feedback"] })
-    }).then(function(r){
-      if(!r.ok) throw new Error("HTTP "+r.status);
-      return r.json();
-    }).then(function(){
+    var bases=["https://gh-proxy.com/https://api.github.com","https://api.github.com"];
+    function tryPost(i){
+      if(i>=bases.length) return Promise.reject(new Error("网络不通"));
+      return fetch(bases[i]+"/repos/Himzer240/medreminder/issues",{
+        method:"POST",
+        headers:{ "Authorization":"Bearer "+tok(), "Accept":"application/vnd.github+json", "Content-Type":"application/json" },
+        body:JSON.stringify({ title:title, body:body, labels:["feedback"] })
+      }).then(function(r){
+        if(!r.ok) throw new Error("HTTP "+r.status);
+        return r.json();
+      }).catch(function(){ return tryPost(i+1); });
+    }
+    tryPost(0).then(function(){
       mg.className="fb-msg ok"; mg.textContent="已收到！反馈已提交，谢谢～";
       document.getElementById("fbText").value="";
       sd.disabled=false; sd.textContent="发送反馈";

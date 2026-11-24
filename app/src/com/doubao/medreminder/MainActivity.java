@@ -1173,7 +1173,9 @@ public class MainActivity extends Activity {
 
     /** 更新日志 */
     private void showChangelog() {
-        String zh = "v8.25.22\n"
+        String zh = "v8.25.23\n"
+                + "· 设置页新增「反馈 / 举报 Bug」：填写后直接提交到仓库，走代理通道国内也能发\n\n"
+                + "v8.25.22\n"
                 + "· 喵语升级成完整独立语言包：设置页等全部界面文字都有喵化文案，不再残留书面语\n\n"
                 + "v8.25.21\n"
                 + "· 表端 1.32：不管停在哪个页面都能收同步（全局接收先存再刷新），按钮背景固定只换字\n\n"
@@ -1279,7 +1281,9 @@ public class MainActivity extends Activity {
                 + "v7.9.0\n"
                 + "· 手机与手表双向同步：新增/编辑/删除/打卡/撤销/下拉刷新都会推给手表\n"
                 + "· 手表到点提醒由手机推送";
-        String en = "v8.25.22\n"
+        String en = "v8.25.23\n"
+                + "· Settings: Feedback / report a bug, submitted to the repo via the proxy channel\n\n"
+                + "v8.25.22\n"
                 + "· Cat-speak is now a complete standalone language pack covering every UI string\n\n"
                 + "v8.25.21\n"
                 + "· Watch 1.32: sync is received on any page via a global handler; pause button keeps a fixed style\n\n"

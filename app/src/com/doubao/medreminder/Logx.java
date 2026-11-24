@@ -113,7 +113,7 @@ public class Logx {
         log(c, "crash", "崩了，已写入 " + f.getName() + "：" + e);
     }
 
-    private static String verName(Context c) {
+    public static String verName(Context c) {
         try {
             return c.getPackageManager().getPackageInfo(c.getPackageName(), 0).versionName;
         } catch (Throwable e) {
@@ -121,7 +121,7 @@ public class Logx {
         }
     }
 
-    private static int verCode(Context c) {
+    public static int verCode(Context c) {
         try {
             return c.getPackageManager().getPackageInfo(c.getPackageName(), 0).versionCode;
         } catch (Throwable e) {

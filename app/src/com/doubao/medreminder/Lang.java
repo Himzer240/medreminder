@@ -25,6 +25,18 @@ public class Lang {
 
     static {
         LangCat.load(CAT);
+        // ---------------- 反馈入口 ----------------
+        p("反馈 / 举报 Bug", "反馈 / 举报问题喵", "Feedback / report a bug");
+        p("你的称呼（可不填）", "你的称呼喵（可不填）", "Your name (optional)");
+        p("说说遇到的问题：哪个版本、手机还是手表、做了什么、出了什么状况",
+                "说说遇到的问题喵：哪个版本、手机还是手表、做了什么、出了什么状况～",
+                "Describe the issue: version, phone or watch, what you did, what happened");
+        p("发送反馈", "发送反馈喵", "Send feedback");
+        p("正在发送…", "正在发送喵…", "Sending…");
+        p("反馈已收到，谢谢～", "反馈收到啦喵，谢谢～", "Feedback received, thank you!");
+        p("发送失败，稍后再试：", "发送失败喵，稍后再试：", "Send failed, try later: ");
+        p("先写点内容再发送", "先写点内容再发喵", "Write something first");
+
         // ---------------- 主界面 ----------------
         p("吃药提醒", "吃药提醒喵～", "Medicine Reminder");
         p("我的药", "我的药喵", "My medicine");

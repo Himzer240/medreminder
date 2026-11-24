@@ -167,6 +167,12 @@ public class SettingsActivity extends Activity {
                 showLog();
             }
         });
+        findViewById(R.id.rowFeedback).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFeedback();
+            }
+        });
         findViewById(R.id.rowDiag).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -793,6 +799,47 @@ public class SettingsActivity extends Activity {
     }
 
     /** 日志：告诉用户存哪、能直接分享出来 */
+    /** 反馈 / 举报 Bug：填写后提交到仓库 Issues */
+    private void showFeedback() {
+        android.widget.LinearLayout box = new android.widget.LinearLayout(this);
+        box.setOrientation(android.widget.LinearLayout.VERTICAL);
+        int pad = (int) (16 * getResources().getDisplayMetrics().density);
+        box.setPadding(pad, pad / 2, pad, 0);
+        final android.widget.EditText name = new android.widget.EditText(this);
+        name.setHint(Lang.s(this, "你的称呼（可不填）"));
+        name.setSingleLine(true);
+        box.addView(name);
+        final android.widget.EditText text = new android.widget.EditText(this);
+        text.setHint(Lang.s(this, "说说遇到的问题：哪个版本、手机还是手表、做了什么、出了什么状况"));
+        text.setMinLines(4);
+        text.setGravity(android.view.Gravity.TOP);
+        box.addView(text);
+        new Loc(this)
+                .setTitle(Lang.s(this, "反馈 / 举报 Bug"))
+                .setView(box)
+                .setNegativeButton(Lang.s(this, "取消"), null)
+                .setPositiveButton(Lang.s(this, "发送反馈"), new android.content.DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(android.content.DialogInterface d, int which) {
+                        String t = text.getText().toString().trim();
+                        if (t.isEmpty()) {
+                            Loc.toast(SettingsActivity.this, Lang.s(SettingsActivity.this, "先写点内容再发送"),
+                                    android.widget.Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        Loc.toast(SettingsActivity.this, Lang.s(SettingsActivity.this, "正在发送…"),
+                                android.widget.Toast.LENGTH_SHORT).show();
+                        Feedback.submit(SettingsActivity.this, name.getText().toString(), t, new Feedback.Cb() {
+                            @Override
+                            public void done(boolean ok, String msg) {
+                                Loc.toast(SettingsActivity.this, msg, android.widget.Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                })
+                .show();
+    }
+
     private void showLog() {
         final java.io.File dir = Logx.dir(this);
         final java.io.File crash = Logx.latestCrash(this);
