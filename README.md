@@ -1,4 +1,4 @@
-# 吃药提醒 · 下载页
+# 吃药提醒 · 完整仓库
 
 <p align="center">
   <b>小米手表配套的吃药提醒 App</b><br>
@@ -6,48 +6,74 @@
 </p>
 
 <p align="center">
-  <a href="https://himzer240.github.io/medreminder/">
-    <img src="https://img.shields.io/badge/%F0%9F%8C%90%20%E7%BD%91%E9%A1%B5%E7%89%88-%E6%89%93%E5%BC%80-0f9d7a?style=for-the-badge" alt="网页版下载页">
-  </a>
-  &nbsp;
-  <a href="https://aka.doubaocdn.com/s/Co6i6iyVEZ">
-    <img src="https://img.shields.io/badge/%E2%AC%87%EF%B8%8F%20%E4%B8%8B%E8%BD%BD%E6%9C%80%E6%96%B0%E7%89%88-v8.24.6-1b1f27?style=for-the-badge" alt="下载最新版 v8.24.6">
-  </a>
+  <a href="https://himzer240.github.io/medreminder/">网页版下载页</a>
+  &nbsp;|&nbsp;
+  <a href="releases/android/medreminder-8.25.1.apk">下载最新版 v8.25.1</a>
 </p>
 
 ---
 
-## 当前版本：v8.24.6（versionCode 120）
+## 当前版本：v8.25.1（versionCode 124）
 
-- 手机端「手表端设置」页背景跟随主题色（补上漏掉的 pageBg 标记）
-- 手表端 1.19：颜色持久化 + 连上主动索取
-- 主题色 24 个，检查更新带动画提示
+- 手机端没网时，检查更新与下载表端都会提示「还没有连接到网络」
+- 手表页新增「下载表端软件（取最新版）」，和「安装手表端」并存
+- 未连接手表时，手表页只留「连接手表」「同步计划」，其余按钮灰掉不可点
+- 主题色 24 个、检查更新带动画提示、疑惑问答整页跟主题色
 
-**下载：** [吃药提醒-v8.24.6.apk](https://aka.doubaocdn.com/s/Co6i6iyVEZ)
+**手机端：** [medreminder-8.25.1.apk](releases/android/medreminder-8.25.1.apk)
 
-**手表端：** [吃药提醒手表端-v1.19.bin](https://aka.doubaocdn.com/s/ULV3CkVOdt)
+**手表端：** [medwatch-1.20.bin](releases/watch/medwatch-1.20.bin)
+
+## 仓库里有什么
+
+```
+app/                手机端源码（Java + 原生 XML，自带 build.sh 一键打包）
+  AndroidManifest.xml
+  build.sh
+  src/ res/ assets/ libs/
+watch/              手表端源码（小米 Vela / aiot 工程）
+  src/ manifest.json package.json sign/
+releases/android/   历史所有手机端 APK（medreminder-<版本>.apk）
+releases/watch/     历史所有手表端安装包（medwatch-<版本>.bin）
+updates/version.json  唯一数据源：最新版本号、说明、APK/表端地址、历史版本
+docs/index.html      网页版下载页，运行时读 version.json
+CHANGELOG.md         完整更新日志
+```
+
+APK 和表端 bin 都是直接提交进仓库的二进制文件，不再依赖外部网盘链接；`updates/version.json` 里的下载地址指向本仓库 Pages 路径。
+
+## 构建方法
+
+手机端（需要 JDK 17 + Android SDK 34）：
+
+```bash
+cd app && bash build.sh
+```
+
+手表端：
+
+```bash
+cd watch && npm i && npx aiot release --enable-jsc
+# 产物 dist/*.rpk，改名 .bin 即可装到手表
+```
 
 ## 历史版本
 
+完整清单见 [releases/android](releases/android) 与 [releases/watch](releases/watch)，各版本说明见 [CHANGELOG.md](CHANGELOG.md)。最近几个：
+
 | 版本 | 说明 | 下载 |
 | --- | --- | --- |
-| v8.24.6 | 手表设置页背景跟主题色 | [下载](https://aka.doubaocdn.com/s/Co6i6iyVEZ) |
-| v8.24.5 | 手表背景色真正同步 | [下载](https://aka.doubaocdn.com/s/teS8Hyt7wR) |
-| v8.24.4 | 步骤说明同步改名 | [下载](https://aka.doubaocdn.com/s/fvf3oICSOS) |
-| v8.24.3 | 改名「安装手表端」 | [下载](https://aka.doubaocdn.com/s/MGpQlwKpmr) |
+| v8.25.1 | 没网提示 + 下载表端软件 | [下载](releases/android/medreminder-8.25.1.apk) |
+| v8.24.7 | 顶部手表图标固定红色 | [下载](releases/android/medreminder-8.24.7.apk) |
+| v8.24.6 | 手表设置页背景跟主题色 | [下载](releases/android/medreminder-8.24.6.apk) |
+| v8.24.5 | 手表背景色真正同步 | [下载](releases/android/medreminder-8.24.5.apk) |
 
 ## 关于更新
 
-打开 App 就会自动查版本：有新版两条路，要么更新、要么不更新。
-
-## 目录
-
-- `updates/version.json` —— 唯一数据源：最新版本、历史版本、表端包地址（网页和 App 都读它）
-- `CHANGELOG.md` —— 完整更新日志
-- `docs/index.html` —— 网页版下载页，运行时读 version.json
+打开 App 就会自动查版本：有新版就弹窗，两条路——要么更新、要么不更新。
 
 ## 说明
 
 > **本仓库的内容都由 AI 助手代为发布和维护，不是账号主人本人在线发布。**
 
-仅供个人使用。
+仅供个人使用。签名密钥（keystore / private.pem）没有放进仓库，避免被人拿去签假包。
