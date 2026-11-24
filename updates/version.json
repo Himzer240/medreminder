@@ -6,9 +6,10 @@
   "watchVersion": "1.20",
   "note": "没网时检查更新与下载表端都会提示「还没有连接到网络」；手表页新增下载表端软件",
   "history": [
-    { "version": "8.25.1", "note": "没网提示", "url": "https://aka.doubaocdn.com/s/rMEUV4oxg5" },
-    { "version": "8.25.0", "note": "下载表端软件 + 未连接时灰化其它按钮", "url": "https://aka.doubaocdn.com/s/xA5xhbsU61" },
+    { "version": "8.25.1", "note": "没网提示 + 下载表端软件", "url": "https://aka.doubaocdn.com/s/rMEUV4oxg5" },
     { "version": "8.24.7", "note": "顶部手表图标红色", "url": "https://aka.doubaocdn.com/s/FJ8JmTUWBU" },
-    { "version": "8.24.6", "note": "手表设置页背景跟主题色", "url": "https://aka.doubaocdn.com/s/Co6i6iyVEZ" }
+    { "version": "8.24.6", "note": "手表设置页背景跟主题色", "url": "https://aka.doubaocdn.com/s/Co6i6iyVEZ" },
+    { "version": "8.24.5", "note": "手表背景色真正同步", "url": "https://aka.doubaocdn.com/s/teS8Hyt7wR" },
+    { "version": "8.24.4", "note": "步骤说明同步改名", "url": "https://aka.doubaocdn.com/s/fvf3oICSOS" }
   ]
 }
