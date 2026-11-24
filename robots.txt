@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://himzer240.github.io/medreminder/sitemap.xml
