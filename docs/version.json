@@ -1,11 +1,16 @@
 {
-  "versionCode": 140,
-  "versionName": "8.25.17",
-  "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.17.apk",
-  "watch": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/watch/medwatch-1.28.bin",
-  "watchVersion": "1.28",
-  "note": "双向即时同步：任一端有改动立刻推送，按时间戳取最新",
+  "versionCode": 141,
+  "versionName": "8.25.18",
+  "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.18.apk",
+  "watch": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/watch/medwatch-1.29.bin",
+  "watchVersion": "1.29",
+  "note": "手机端暂停也即时推表；表端暂停/恢复改成两个独立按钮",
   "history": [
+    {
+      "version": "8.25.18",
+      "note": "双向即时同步补齐+按钮修复",
+      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.18.apk"
+    },
     {
       "version": "8.25.17",
       "note": "双向即时同步",
@@ -25,11 +30,6 @@
       "version": "8.25.14",
       "note": "表端关闭计划在管理页可见",
       "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.14.apk"
-    },
-    {
-      "version": "8.25.13",
-      "note": "手机端关闭的计划不再上表",
-      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.13.apk"
     }
   ]
 }
