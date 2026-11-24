@@ -314,6 +314,31 @@ public class WatchBridge {
                 WatchSync.pushTheme(appCtx);
                 return;
             }
+            if ("enable".equals(tag)) {
+                // 手表上直接点「重新打开」：把手机端这个计划重新开启提醒
+                long medId = parseId(o.optString("id", ""));
+                Medicine med = medId > 0 ? MedStore.find(appCtx, medId) : null;
+                if (med == null) {
+                    lastRecv = stamp + " 表上重新打开（找不到计划）";
+                    EventLog.add(appCtx, "收到手表：重新打开，但没找到 id=" + medId);
+                    return;
+                }
+                med.enabled = true;
+                MedStore.upsert(appCtx, med);
+                WatchFlags.clearPaused(appCtx, medId);
+                Scheduler.rescheduleAll(appCtx);
+                WatchSync.pushPlans(appCtx);
+                lastRecv = stamp + " 表上重新打开「" + med.name + "」";
+                EventLog.add(appCtx, "收到手表：重新打开「" + med.name + "」，已发回最新计划");
+                notifyUi();
+                return;
+            }
+            if ("wantPlans".equals(tag)) {
+                // 手表刚连上就来要计划：直接推一份最新的
+                WatchSync.pushPlans(appCtx);
+                EventLog.add(appCtx, "手表请求计划，已推送");
+                return;
+            }
             if ("taken".equals(tag)) {
                 long medId = parseId(o.optString("id", ""));
                 if (medId > 0) {
@@ -331,6 +356,28 @@ public class WatchBridge {
                     EventLog.add(appCtx, "收到手表：撤销 id=" + medId + (ok ? "" : "（没记录可撤）"));
                     notifyUi();
                 }
+            } else if ("pauseState".equals(tag)) {
+                JSONArray paused = o.optJSONArray("paused");
+                JSONArray disabled = o.optJSONArray("disabled");
+                long at = o.optLong("at", 0L);
+                // 谁的操作更新听谁的：表上这条比手机本机最后一次改动还旧，就不采纳
+                if (at > 0 && at < SyncStamp.last(appCtx)) {
+                    lastRecv = stamp + " 表上操作比手机旧，忽略并回推最新";
+                    EventLog.add(appCtx, "收到手表：暂停状态已过时，按手机为准");
+                    WatchSync.pushPlans(appCtx);
+                    return;
+                }
+                WatchFlags.save(appCtx, paused, disabled);
+                if (at > 0) SyncStamp.set(appCtx, at);
+                // 表上暂停/禁用的计划，手机这边也不排提醒
+                Scheduler.rescheduleAll(appCtx);
+                int np = paused == null ? 0 : paused.length();
+                int nd = disabled == null ? 0 : disabled.length();
+                lastRecv = stamp + " 表上计划状态（暂停 " + np + " / 禁用 " + nd + "）";
+                EventLog.add(appCtx, "收到手表：计划状态，暂停 " + np + " 个、禁用 " + nd + " 个");
+                // 立刻回推一份，保证两边马上一致
+                WatchSync.pushPlans(appCtx);
+                notifyUi();
             } else if ("sync".equals(tag)) {
                 JSONArray counts = o.optJSONArray("counts");
                 if (counts != null) {

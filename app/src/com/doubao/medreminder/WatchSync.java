@@ -176,6 +176,10 @@ public class WatchSync {
 
     /** 手机端改了“今天已吃次数”后，把最新计划+次数推给手表（不打开表端应用） */
     public static void pushPlans(final Context context) {
+        pushPlans(context, 0);
+    }
+
+    private static void pushPlans(final Context context, final int retry) {
         final Context ctx = context.getApplicationContext();
         try {
             Wearable.getNodeApi(ctx).getConnectedNodes()
@@ -184,8 +188,23 @@ public class WatchSync {
                         public void onSuccess(List<Node> nodes) {
                             if (nodes == null || nodes.isEmpty()) return;
                             try {
+                                final String body = buildPayload(ctx);
                                 Wearable.getMessageApi(ctx).sendMessage(nodes.get(0).id,
-                                        buildPayload(ctx).getBytes(Charset.forName("UTF-8")));
+                                        body.getBytes(Charset.forName("UTF-8")))
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(Exception e) {
+                                                if (retry < 2) {
+                                                    new android.os.Handler(android.os.Looper.getMainLooper())
+                                                            .postDelayed(new Runnable() {
+                                                                @Override
+                                                                public void run() {
+                                                                    pushPlans(ctx, retry + 1);
+                                                                }
+                                                            }, 1200);
+                                                }
+                                            }
+                                        });
                             } catch (Throwable ignored) {
                             }
                         }
@@ -270,14 +289,17 @@ public class WatchSync {
         root.put("tag", "plans");
         JSONArray arr = new JSONArray();
         for (Medicine m : meds) {
-            if (!m.enabled) continue;
             if (m.times.isEmpty()) continue;
+            // 手机端关掉提醒的计划也要下发，手表那边只在「管理次数」里显示成已关闭
             JSONObject o = new JSONObject();
             o.put("id", String.valueOf(m.id));
             o.put("name", m.name);
             o.put("dose", m.dose);
             o.put("meal", "不限".equals(m.meal) ? "" : m.meal);
             o.put("purpose", m.purpose == null ? "" : m.purpose);
+            long wId = m.id;
+            o.put("off", !m.enabled || WatchFlags.stateOf(ctx, wId) != WatchFlags.NORMAL);
+            o.put("t", SyncStamp.last(ctx));
             JSONArray t = new JSONArray();
             for (int[] hm : m.times) {
                 t.put(String.format(java.util.Locale.US, "%02d:%02d", hm[0], hm[1]));
@@ -288,6 +310,13 @@ public class WatchSync {
         }
         root.put("plans", arr);
         root.put("color", AppTheme.hex(AppTheme.accent(ctx)));
+        // 端到端时间戳 + 手机端的暂停名单，手表据此对齐
+        root.put("at", SyncStamp.last(ctx));
+        try {
+            root.put("paused", new JSONArray(WatchFlags.pausedJson(ctx)));
+        } catch (Throwable ignored) {
+            root.put("paused", new JSONArray());
+        }
         return root.toString();
     }
 

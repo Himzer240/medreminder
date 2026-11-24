@@ -5,11 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="吃药提醒 App 下载页：小米手表配套的吃药提醒，含最新版 APK、历史版本与更新说明">
 <title>吃药提醒 · 下载</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%230f9d7a'/%3E%3Crect x='16' y='8' width='16' height='32' rx='5' fill='white'/%3E%3Cpath d='M24 16v8l5 3' stroke='%230b7d61' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
 <style>
   :root{--bg:#f3f5f7;--card:#fff;--text:#1b1f27;--sub:#6b7280;--line:#e6e9ee;--accent:#0f9d7a;--accent-dark:#0b7d61}
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
   .wrap{max-width:680px;margin:0 auto;padding:34px 20px 60px}
+  .hero{display:flex;align-items:center;gap:16px;margin-bottom:10px}
+  .appicon{width:64px;height:64px;border-radius:16px;background:linear-gradient(135deg,#0f9d7a,#0b7d61);display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 6px 16px rgba(15,157,122,.28)}
+  .appicon svg{width:40px;height:40px}
+  .btn svg{width:18px;height:18px;flex:none}
+  .sec-title{display:flex;align-items:center;gap:7px}
+  .sec-title svg{width:16px;height:16px}
   header h1{font-size:26px;margin:0 0 8px;letter-spacing:-.5px}
   header p{margin:0;color:var(--sub);font-size:13.5px;line-height:1.7}
   .badge{display:inline-block;margin-top:14px;padding:5px 11px;border-radius:999px;background:#e7f6f1;color:var(--accent-dark);font-size:12px;font-weight:600}
@@ -36,7 +43,19 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>吃药提醒 · 下载</h1>
+    <div class="hero">
+      <div class="appicon">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="14" y="6" width="20" height="36" rx="6" fill="#fff" opacity=".95"/>
+          <rect x="18" y="2" width="12" height="6" rx="2" fill="#d7efe7"/>
+          <rect x="18" y="40" width="12" height="6" rx="2" fill="#d7efe7"/>
+          <path d="M24 15v9l6 4" stroke="#0b7d61" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="38" cy="12" r="7" fill="#ffd166"/>
+          <path d="M38 8.5v4l2.5 1.5" stroke="#7a5b00" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h1>吃药提醒 · 下载</h1>
+    </div>
     <p>小米手表配套的吃药提醒 App：手机端负责管理药品与提醒，手表端负责到点提醒和震动。</p>
     <span class="badge">内容由 AI 助手代发维护</span>
   </header>
@@ -47,15 +66,15 @@
       <span class="meta" id="verMeta">versionCode 128 · 最新版</span>
     </div>
     <p class="note" id="verNote">修掉更新弹窗导致的闪退；新增运行/闪退日志，可在设置里分享</p>
-    <a class="btn btn-primary" id="dl" href="https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.5.apk">直接下载 APK</a>
-    <a class="btn btn-ghost" href="https://github.com/Himzer240/medreminder">到 GitHub 查看仓库</a>
+    <a class="btn btn-primary" id="dl" href="https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.5.apk"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 21h16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>直接下载 APK</a>
+    <a class="btn btn-ghost" href="https://github.com/Himzer240/medreminder"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.1.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.56 9.56 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85V21c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>到 GitHub 查看仓库</a>
     <div class="row">
-      <a class="btn btn-ghost" href="https://github.com/Himzer240/medreminder/blob/main/CHANGELOG.md">看完整更新日志</a>
-      <a class="btn btn-ghost" href="https://raw.githubusercontent.com/Himzer240/medreminder/main/updates/version.json">看版本信息</a>
+      <a class="btn btn-ghost" href="https://github.com/Himzer240/medreminder/blob/main/CHANGELOG.md"><svg viewBox="0 0 24 24" fill="none"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>看完整更新日志</a>
+      <a class="btn btn-ghost" href="version.html"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.2"/><path d="M12 11v5m0-8.5v.01" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>看版本信息</a>
     </div>
   </section>
 
-  <div class="sec-title">历史版本</div>
+  <div class="sec-title"><svg viewBox="0 0 24 24" fill="none"><path d="M12 8v4l3 2M3.05 11a9 9 0 1 1 .5 4M3 15v-4h4" stroke="#0b7d61" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>历史版本</div>
   <section class="card" style="padding:8px 18px 14px">
     <table>
       <thead><tr><th>版本</th><th>说明</th><th>下载</th></tr></thead>
@@ -76,8 +95,19 @@
 </div>
 <script>
 (function () {
-  fetch("https://raw.githubusercontent.com/Himzer240/medreminder/main/updates/version.json?t=" + Date.now())
-    .then(function (r) { return r.json(); })
+  var urls = [
+    "https://ghproxy.net/https://raw.githubusercontent.com/Himzer240/medreminder/main/updates/version.json",
+    "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/updates/version.json",
+    "https://cdn.jsdelivr.net/gh/Himzer240/medreminder@main/updates/version.json",
+    "https://raw.githubusercontent.com/Himzer240/medreminder/main/updates/version.json"
+  ];
+  function tryFetch(i) {
+    if (i >= urls.length) return Promise.reject();
+    return fetch(urls[i] + "?t=" + Date.now()).then(function (r) {
+      if (!r.ok) throw 0; return r.json();
+    }).catch(function () { return tryFetch(i + 1); });
+  }
+  tryFetch(0)
     .then(function (v) {
       if (v.versionName) document.getElementById("verName").textContent = "v" + v.versionName;
       if (v.versionCode) document.getElementById("verMeta").textContent = "versionCode " + v.versionCode + " · 最新版";

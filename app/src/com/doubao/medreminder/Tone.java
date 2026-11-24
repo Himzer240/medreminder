@@ -38,7 +38,7 @@ public class Tone {
     /** 按当前风格取一句话 */
     public static String s(Context c, String formal, String cat, String en) {
         int st = style(c);
-        if (st == CAT) return cat == null ? formal : cat;
+        if (st == CAT) return cat == null ? Lang.s(c, formal) : cat;
         if (st == EN) return en == null ? formal : en;
         return formal;
     }

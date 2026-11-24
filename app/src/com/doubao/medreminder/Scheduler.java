@@ -136,8 +136,9 @@ public class Scheduler {
     public static void rescheduleAll(Context c) {
         List<Medicine> list = MedStore.load(c);
         for (Medicine m : list) {
+            boolean on = m.enabled && WatchFlags.stateOf(c, m.id) == WatchFlags.NORMAL;
             for (int i = 0; i < m.times.size(); i++) {
-                if (m.enabled) {
+                if (on) {
                     schedule(c, m, i);
                 } else {
                     AlarmManager am = (AlarmManager) c.getSystemService(Context.ALARM_SERVICE);

@@ -24,6 +24,7 @@ public class Lang {
     }
 
     static {
+        LangCat.load(CAT);
         // ---------------- 主界面 ----------------
         p("吃药提醒", "吃药提醒喵～", "Medicine Reminder");
         p("我的药", "我的药喵", "My medicine");
@@ -655,12 +656,26 @@ public class Lang {
         }
         if (st == Tone.CAT) {
             String v = CAT.get(zh);
-            return v == null ? zh : v;
+            return v == null ? autoCat(zh) : v;
         }
         if (st == Tone.EN) {
             String v = EN.get(zh);
             return v == null ? zh : v;
         }
         return zh;
+    }
+
+    /** 喵语兜底：没有人工译文的条目，自动喵化，保证不残留书面语 */
+    private static String autoCat(String zh) {
+        if (!hasHan(zh)) return zh;
+        String t = zh.replace("请", "").replace("您", "你");
+        // 结尾标点前插「喵」
+        int end = t.length();
+        while (end > 0 && "？！。：;…～~ ".indexOf(t.charAt(end - 1)) >= 0) end--;
+        if (end == 0) return zh;
+        String head = t.substring(0, end);
+        String tail = t.substring(end);
+        if (head.endsWith("喵")) return t;
+        return head + "喵" + tail;
     }
 }

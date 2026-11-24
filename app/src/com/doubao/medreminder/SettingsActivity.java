@@ -161,6 +161,12 @@ public class SettingsActivity extends Activity {
             }
         });
 
+        findViewById(R.id.rowLog).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLog();
+            }
+        });
         findViewById(R.id.rowDiag).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -783,6 +789,87 @@ public class SettingsActivity extends Activity {
             default:
                 startActivity(new Intent(this, DiagnosticsActivity.class));
                 break;
+        }
+    }
+
+    /** 日志：告诉用户存哪、能直接分享出来 */
+    private void showLog() {
+        final java.io.File dir = Logx.dir(this);
+        final java.io.File crash = Logx.latestCrash(this);
+        final java.io.File app = Logx.appLog(this);
+        String size = "";
+        try {
+            java.io.File f = (crash != null) ? crash : app;
+            if (f != null && f.exists()) {
+                size = "（" + Math.max(1, f.length() / 1024) + " KB）";
+            }
+        } catch (Throwable ignored) {
+        }
+        String msg = "日志存在手机的这个文件夹里：\n" + dir.getAbsolutePath()
+                + "\n\n"
+                + (crash != null ? ("最近一次闪退日志：" + crash.getName() + size) : "还没有闪退记录")
+                + "\n"
+                + "运行日志：app.log" + (app != null && app.exists() ? "" : "（还没有内容）")
+                + "\n\n点「分享日志」会直接把文件发到聊天窗口，发给做这个 App 的人就行。";
+        AlertDialog.Builder b = new Loc(this)
+                .setTitle("日志")
+                .setMessage(msg)
+                .setPositiveButton("分享日志", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface d, int w) {
+                        shareLog();
+                    }
+                })
+                .setNeutralButton("清空", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface d, int w) {
+                        try {
+                            java.io.File dd = Logx.dir(SettingsActivity.this);
+                            java.io.File[] fs = dd.listFiles();
+                            if (fs != null) {
+                                for (java.io.File f : fs) f.delete();
+                            }
+                            Logx.log(SettingsActivity.this, "app", "日志已清空");
+                            Toast.makeText(SettingsActivity.this, "日志已清空", Toast.LENGTH_SHORT).show();
+                        } catch (Throwable ignored) {
+                        }
+                    }
+                })
+                .setNegativeButton("知道了", null);
+        AlertDialog dlg = b.create();
+        try {
+            dlg.show();
+        } catch (Throwable ignored) {
+        }
+    }
+
+    /** 把日志复制到能分享的目录，再走系统分享 */
+    private void shareLog() {
+        try {
+            java.io.File src = Logx.latestCrash(this);
+            if (src == null) src = Logx.appLog(this);
+            if (src == null || !src.exists() || src.length() == 0) {
+                Toast.makeText(this, "还没有日志，先让问题发生一次再来看", Toast.LENGTH_LONG).show();
+                return;
+            }
+            String stamp = new SimpleDateFormat("MMdd-HHmm", Locale.US).format(new Date());
+            java.io.File out = new java.io.File(ApkProvider.dir(this), "日志-" + stamp + ".txt");
+            java.io.FileOutputStream fos = new java.io.FileOutputStream(out);
+            java.io.FileInputStream fis = new java.io.FileInputStream(src);
+            byte[] buf = new byte[4096];
+            int n;
+            while ((n = fis.read(buf)) > 0) fos.write(buf, 0, n);
+            fis.close();
+            fos.close();
+
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("text/plain");
+            i.putExtra(Intent.EXTRA_STREAM, ApkProvider.uriFor(out));
+            i.putExtra(Intent.EXTRA_SUBJECT, "吃药提醒日志 " + src.getName());
+            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(Intent.createChooser(i, "把日志发到哪"));
+        } catch (Throwable e) {
+            Toast.makeText(this, "分享失败：" + e, Toast.LENGTH_LONG).show();
         }
     }
 }

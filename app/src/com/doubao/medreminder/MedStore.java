@@ -45,6 +45,9 @@ public class MedStore {
         for (Medicine m : list) arr.put(m.toJson());
         c.getSharedPreferences(PREF, Context.MODE_PRIVATE)
                 .edit().putString(KEY, arr.toString()).apply();
+        // 手机端一改就盖个时间戳，并立刻推给手表，免得两边各说各话
+        SyncStamp.touch(c);
+        WatchSync.pushPlans(c);
     }
 
     public static Medicine find(Context c, long id) {

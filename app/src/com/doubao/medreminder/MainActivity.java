@@ -450,12 +450,15 @@ public class MainActivity extends Activity {
             }
             detail.setText(d);
             int taken = MedStore.takenCount(this, m.id);
-            status.setText(m.enabled
-                    ? (enNow ? ("Taken " + taken + " / " + m.doseCount() + " today")
-                             : ("今天已服 " + taken + " / " + m.doseCount() + " 次"))
-                    : Lang.s(this, "已关闭提醒"));
-            if (!m.enabled) {
-                // 提醒已关闭：按钮置灰、不可点
+            int wState = WatchFlags.stateOf(this, m.id);
+            // 手表上暂停的计划，跟手机自己关掉提醒是一回事
+            boolean off = !m.enabled || wState != WatchFlags.NORMAL;
+            status.setText(off
+                    ? Lang.s(this, "已关闭提醒")
+                    : (enNow ? ("Taken " + taken + " / " + m.doseCount() + " today")
+                             : ("今天已服 " + taken + " / " + m.doseCount() + " 次")));
+            if (off) {
+                // 提醒关掉了，或者在手表上暂停/禁用了：按钮置灰不可点，跟手机自己关掉时一样
                 take.setBackgroundResource(R.drawable.bg_btn_grey);
                 take.setTextColor(0xFF9AA3B2);
                 take.setText(Tone.disabledTake(this));
@@ -469,7 +472,7 @@ public class MainActivity extends Activity {
                 take.setTextColor(0xFFFFFFFF);
                 take.setText(Tone.takeBtn(this, false));
             }
-            if (m.enabled) {
+            if (!off) {
                 total += m.doseCount();
                 takenTotal += Math.min(taken, m.doseCount());
             }
@@ -1149,6 +1152,8 @@ public class MainActivity extends Activity {
     private void setPlanEnabled(Medicine m, boolean on) {
         m.enabled = on;
         MedStore.upsert(this, m);
+        // 手机端暂停/恢复也记进名单，带时间戳推给手表
+        WatchFlags.setPaused(this, m.id, !on);
         if (on) {
             Scheduler.rescheduleAll(this);
         } else {
@@ -1168,7 +1173,56 @@ public class MainActivity extends Activity {
 
     /** 更新日志 */
     private void showChangelog() {
-        String zh = "v8.25.1\n"
+        String zh = "v8.25.22\n"
+                + "· 喵语升级成完整独立语言包：设置页等全部界面文字都有喵化文案，不再残留书面语\n\n"
+                + "v8.25.21\n"
+                + "· 表端 1.32：不管停在哪个页面都能收同步（全局接收先存再刷新），按钮背景固定只换字\n\n"
+                + "v8.25.20\n"
+                + "· 表端 1.31：暂停按钮背景固定不动，只换文字「暂停这个计划／恢复这个计划」\n\n"
+                + "v8.25.19\n"
+                + "· 表端 1.30：按钮颜色写死在样式里不再动态切，进次数页每次都重新拉计划，发送失败会自动重试一次\n\n"
+                + "v8.25.18\n"
+                + "· 手机端暂停/恢复也会写进同步名单并立刻推表，两端彻底一致\n"
+                + "· 表端 1.29：暂停和恢复分成两个独立按钮，不会再出现纯色块没字\n\n"
+                + "v8.25.17\n"
+                + "· 手机端任何改动立刻推给手表，手表任何操作立刻回推，谁的操作新就按谁\n\n"
+                + "v8.25.16\n"
+                + "· 手表上关掉提醒的计划在次数页显示「恢复这个计划」，点了直接恢复并同步\n\n"
+                + "v8.25.15\n"
+                + "· 手表连着就自动来要一次计划，不用手动点同步也不会脱节\n"
+                + "· 表端 1.26：暂停按钮修好，恢复后不会再变成一整块主题色没字\n\n"
+                + "v8.25.14\n"
+                + "· 表端 1.25：手机端关掉的计划不显示在手表主页，但在「管理每个计划的次数」页里能看到，标着「（已关闭）」\n\n"
+                + "v8.25.13\n"
+                + "· 手机端关掉提醒的计划，同步时不再发给手表；手表端会顺带清掉残留的那些，主页不再显示\n\n"
+                + "v8.25.12\n"
+                + "· 手表端 1.23：只管暂停/恢复，不再有禁用；暂停按钮做大了一整行\n"
+                + "· 手表设置页删掉「已暂停的计划」那块，暂停后在计划页再点一次就恢复\n"
+                + "· 手机端遇到手表暂停的计划，直接按「已关闭提醒」处理：灰掉、不排提醒\n\n"
+                + "v8.25.11\n"
+                + "· 表上暂停/禁用的计划，手机端按“关闭提醒”一样处理：那一行按钮灰掉、状态写「手表端已暂停/已禁用」，也不再排手机提醒；表上恢复后自动恢复\n\n"
+                + "v8.25.10\n"
+                + "· 不重复下载：手机端和表端包本地已经是最新（或更新）就不再下，直接提示并有现成的包可装\n"
+                + "· 自动清理：只留最新的一份安装包，旧的删掉，免得越攒越多占空间\n"
+                + "· 表端下载也改成跟手机端一样，多个镜像里取最新版本\n\n"
+                + "v8.25.9\n"
+                + "· 手表端 1.22：在表上暂停或禁用某个计划后，会告诉手机，手机的计划那一行后面直接标「手表端已暂停」/「手表端已禁用」\n\n"
+                + "v8.25.8\n"
+                + "· 检查更新把几个镜像全问一遍，取版本号最大的那个，单个镜像缓存报旧版本也不会再把新版本盖掉\n\n"
+                + "v8.25.7\n"
+                + "· 手表端页面的「打开小米运动健康」不再跟着灰掉：没连上手表时它照样能点，不打开它就连不上\n\n"
+                + "v8.25.6\n"
+                + "· 版本信息改走 gh-proxy 代理（jsDelivr 缓存太久，发新版后 App 半天看不到），下载地址也自动换代理重试\n\n"
+                + "v8.25.5\n"
+                + "· 加了日志：闪退、进不去都能留证据。设置页最下面「日志」能看到位置，点「分享日志」直接发出去\n\n"
+                + "v8.25.4\n"
+                + "· 修掉闪退：以前桌面版本和仓库里的版本不一样时，回到前台弹更新窗用了 Application 的上下文，安卓直接崩；现在改用当前页面弹\n\n"
+                + "v8.25.3\n"
+                + "· 手表端 1.21：计划可以暂停，暂停后主页不显示，手表设置里能选恢复或禁用；手表设置页颜色也会跟着手机变了\n\n"
+                + "v8.25.2\n"
+                + "· 更新改走 jsDelivr 镜像（国内能连），连不上会自动换备用的两个地址，下载也一样\n"
+                + "· 更新包地址直接从仓库里取，不再走豆包网盘\n\n"
+                + "v8.25.1\n"
                 + "· 没网的时候，设置页点「检查更新」会在按钮下面提示「还没有连接到网络」；手表页下载表端也会先提示没网\n\n"
                 + "v8.25.0\n"
                 + "· 手表页新增「下载表端软件」：从 GitHub 取最新表端包，下完存到手机里，「安装手表端」就装这份最新的\n"
@@ -1225,7 +1279,53 @@ public class MainActivity extends Activity {
                 + "v7.9.0\n"
                 + "· 手机与手表双向同步：新增/编辑/删除/打卡/撤销/下拉刷新都会推给手表\n"
                 + "· 手表到点提醒由手机推送";
-        String en = "v8.25.1\n"
+        String en = "v8.25.22\n"
+                + "· Cat-speak is now a complete standalone language pack covering every UI string\n\n"
+                + "v8.25.21\n"
+                + "· Watch 1.32: sync is received on any page via a global handler; pause button keeps a fixed style\n\n"
+                + "v8.25.20\n"
+                + "· Watch 1.31: the pause button keeps one fixed style, only its label changes\n\n"
+                + "v8.25.19\n"
+                + "· Watch 1.30: button colors fixed in CSS, plans page reloads every time, send auto-retries\n\n"
+                + "v8.25.18\n"
+                + "· Phone pause/resume is now broadcast to the watch instantly\n"
+                + "· Watch 1.29: pause and resume are separate buttons, no blank colored block\n\n"
+                + "v8.25.17\n"
+                + "· Any change on either side is pushed instantly; the newer edit wins\n\n"
+                + "v8.25.16\n"
+                + "· Plans turned off on the phone can be restored straight from the watch\n\n"
+                + "v8.25.15\n"
+                + "· Watch asks for the latest plans as soon as it connects\n"
+                + "· Watch 1.26: pause button fixed (no more solid accent block without text after resuming)\n\n"
+                + "v8.25.14\n"
+                + "· Watch 1.25: plans switched off on the phone stay off on the watch home but remain visible in the per-plan page, marked as off\n\n"
+                + "v8.25.13\n"
+                + "· Plans disabled on the phone are no longer synced to the watch, and leftovers are cleared\n\n"
+                + "v8.25.12\n"
+                + "· Watch 1.23: pause/resume only (no disable), bigger pause button, no paused list on the settings page\n"
+                + "· A plan paused on the watch is treated as disabled on the phone\n\n"
+                + "v8.25.11\n"
+                + "· Plans paused or disabled on the watch now look and behave like disabled on the phone, and their alarms are cancelled\n\n"
+                + "v8.25.10\n"
+                + "· No re-download when the newest package is already stored; old ones are pruned\n\n"
+                + "v8.25.9\n"
+                + "· Watch 1.22 reports paused/disabled plans, so the phone list shows the state\n\n"
+                + "v8.25.8\n"
+                + "· Update check now queries every mirror and takes the highest version code\n\n"
+                + "v8.25.7\n"
+                + "· The Xiaomi Health button stays clickable even when the watch is disconnected\n\n"
+                + "v8.25.6\n"
+                + "· Version checks now go through a raw-GitHub proxy; jsDelivr cached too long\n\n"
+                + "v8.25.5\n"
+                + "· Added crash and runtime logging. Settings → Log shows the folder and can share the file\n\n"
+                + "v8.25.4\n"
+                + "· Fixed the startup crash: the update prompt was built with the Application context and Android rejects window tokens from it\n\n"
+                + "v8.25.3\n"
+                + "· Watch 1.21: plans can be paused (hidden on home, restore or disable in watch settings); watch settings page now follows the theme color\n\n"
+                + "v8.25.2\n"
+                + "· Update checks now go through the jsDelivr mirror, with two fallback hosts\n"
+                + "· Update packages are served straight from the repo\n\n"
+                + "v8.25.1\n"
                 + "· Offline: settings shows “not connected to network” under the check button\n\n"
                 + "v8.25.0\n"
                 + "· Watch page: download the latest watch build from GitHub; install uses it\n"

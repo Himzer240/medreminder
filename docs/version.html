@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>吃药提醒 · 版本信息</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%230f9d7a'/%3E%3Crect x='16' y='8' width='16' height='32' rx='5' fill='white'/%3E%3Cpath d='M24 16v8l5 3' stroke='%230b7d61' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+  :root{--bg:#f3f5f7;--card:#fff;--text:#1b1f27;--sub:#6b7280;--line:#e6e9ee;--accent:#0f9d7a;--accent-dark:#0b7d61}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif}
+  .wrap{max-width:680px;margin:0 auto;padding:34px 20px 60px}
+  .hero{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+  .appicon{width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,#0f9d7a,#0b7d61);display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 6px 16px rgba(15,157,122,.28)}
+  .appicon svg{width:38px;height:38px}
+  h1{font-size:24px;margin:0}
+  .sub{color:var(--sub);font-size:13px;margin-top:4px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-top:16px}
+  .big{display:flex;align-items:center;gap:14px}
+  .big svg{width:34px;height:34px;flex:none}
+  .no{font-size:26px;font-weight:800}
+  .meta{font-size:12.5px;color:var(--sub);margin-top:2px}
+  .note{margin:14px 0 0;font-size:14px;line-height:1.8;color:#3f4653;background:#f2faf7;border-radius:12px;padding:12px 14px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;text-decoration:none;color:var(--text);display:flex;flex-direction:column;gap:8px}
+  .tile svg{width:26px;height:26px}
+  .tile b{font-size:14.5px}
+  .tile span{font-size:12px;color:var(--sub);line-height:1.6}
+  .sec{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:700;margin:26px 0 10px}
+  .sec svg{width:16px;height:16px}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:11px 6px;border-bottom:1px solid var(--line)}
+  th{color:var(--sub);font-weight:500;font-size:12px}
+  td a{color:var(--accent-dark);text-decoration:none;font-weight:600}
+  .back{display:inline-flex;align-items:center;gap:6px;margin-top:26px;color:var(--accent-dark);text-decoration:none;font-size:13.5px;font-weight:600}
+  footer{margin-top:26px;text-align:center;font-size:12px;color:#9aa2ad}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="appicon">
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="14" y="6" width="20" height="36" rx="6" fill="#fff" opacity=".95"/>
+        <rect x="18" y="2" width="12" height="6" rx="2" fill="#d7efe7"/>
+        <rect x="18" y="40" width="12" height="6" rx="2" fill="#d7efe7"/>
+        <path d="M24 15v9l6 4" stroke="#0b7d61" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="38" cy="12" r="7" fill="#ffd166"/>
+        <path d="M38 8.5v4l2.5 1.5" stroke="#7a5b00" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div>
+      <h1>版本信息</h1>
+      <div class="sub">吃药提醒 · 手机端 + 手表端</div>
+    </div>
+  </div>
+
+  <section class="card">
+    <div class="big">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M20 7L9 18l-5-5" stroke="#0f9d7a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div>
+        <div class="no" id="verName">加载中…</div>
+        <div class="meta" id="verMeta">正在从仓库读取</div>
+      </div>
+    </div>
+    <p class="note" id="verNote">稍等，正在取最新版本说明。</p>
+  </section>
+
+  <div class="grid">
+    <a class="tile" id="dlApk" href="#">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="5" y="2" width="14" height="20" rx="3" stroke="#0b7d61" stroke-width="2"/><path d="M12 7v6m0 0l-2.5-2.5M12 13l2.5-2.5" stroke="#0b7d61" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <b>手机端 APK</b><span id="apkVer">最新版安装包</span>
+    </a>
+    <a class="tile" id="dlWatch" href="#">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="7" y="6" width="10" height="12" rx="3" stroke="#0b7d61" stroke-width="2"/><path d="M9 6V3h6v3M9 18v3h6v-3" stroke="#0b7d61" stroke-width="2" stroke-linecap="round"/><path d="M12 9.5v3l2 1.2" stroke="#0b7d61" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <b>手表端 .bin</b><span id="watchVer">最新版表端包</span>
+    </a>
+  </div>
+
+  <div class="sec"><svg viewBox="0 0 24 24" fill="none"><path d="M12 8v4l3 2M3.05 11a9 9 0 1 1 .5 4M3 15v-4h4" stroke="#0b7d61" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>最近版本</div>
+  <section class="card" style="padding:8px 18px 14px">
+    <table>
+      <thead><tr><th>版本</th><th>说明</th><th>下载</th></tr></thead>
+      <tbody id="history"><tr><td colspan="3" style="color:#9aa2ad">加载中…</td></tr></tbody>
+    </table>
+  </section>
+
+  <a class="back" href="index.html">← 回下载页</a>
+  <footer>内容由 AI 助手代发维护</footer>
+</div>
+<script>
+(function () {
+  var urls = [
+    "https://ghproxy.net/https://raw.githubusercontent.com/Himzer240/medreminder/main/updates/version.json",
+    "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/updates/version.json",
+    "https://cdn.jsdelivr.net/gh/Himzer240/medreminder@main/updates/version.json",
+    "https://raw.githubusercontent.com/Himzer240/medreminder/main/updates/version.json"
+  ];
+  function tryFetch(i) {
+    if (i >= urls.length) return Promise.reject();
+    return fetch(urls[i] + "?t=" + Date.now()).then(function (r) {
+      if (!r.ok) throw 0; return r.json();
+    }).catch(function () { return tryFetch(i + 1); });
+  }
+  tryFetch(0).then(function (v) {
+    document.getElementById("verName").textContent = "v" + (v.versionName || "?");
+    document.getElementById("verMeta").textContent = "versionCode " + (v.versionCode || "?") + " · 手表端 " + (v.watchVersion || "?");
+    document.getElementById("verNote").textContent = v.note || "";
+    if (v.url) document.getElementById("dlApk").href = v.url;
+    if (v.watch) document.getElementById("dlWatch").href = v.watch;
+    document.getElementById("apkVer").textContent = "v" + (v.versionName || "") + " 安装包";
+    document.getElementById("watchVer").textContent = "v" + (v.watchVersion || "") + " 表端包";
+    if (v.history && v.history.length) {
+      document.getElementById("history").innerHTML = v.history.map(function (h) {
+        return "<tr><td>v" + h.version + "</td><td>" + h.note + "</td><td><a href=\"" + h.url + "\">下载</a></td></tr>";
+      }).join("");
+    }
+  }).catch(function () {
+    document.getElementById("verMeta").textContent = "读取失败，稍后重试";
+  });
+})();
+</script>
+</body>
+</html>

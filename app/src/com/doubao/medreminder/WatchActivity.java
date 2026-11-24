@@ -14,7 +14,7 @@ import java.io.InputStream;
 public class WatchActivity extends Activity {
 
     private static final String ASSET_NAME = "medwatch.bin";
-    private static final String OUT_NAME = "吃药提醒手表端-v1.20.bin";
+    private static final String OUT_NAME = "吃药提醒手表端-v1.32.bin";
 
     private TextView txtSync;
     private TextView txtPath;
@@ -122,7 +122,8 @@ public class WatchActivity extends Activity {
         boolean connected = WatchBridge.stateText(this).startsWith("已连接");
         setBtnEnabled(R.id.btnDownloadWatch, connected);
         setBtnEnabled(R.id.btnExport, connected);
-        setBtnEnabled(R.id.btnOpenHealth, connected);
+        // 「打开小米运动健康」始终可点：没连上手表时恰恰需要靠它去连
+        setBtnEnabled(R.id.btnOpenHealth, true);
     }
 
     private void setBtnEnabled(int id, boolean on) {
@@ -156,18 +157,7 @@ public class WatchActivity extends Activity {
             @Override
             public void run() {
                 try {
-                    java.net.HttpURLConnection conn =
-                            (java.net.HttpURLConnection) new java.net.URL(UpdateChecker.VERSION_URL).openConnection();
-                    conn.setConnectTimeout(10000);
-                    conn.setReadTimeout(10000);
-                    java.io.InputStream in = conn.getInputStream();
-                    StringBuilder sb = new StringBuilder();
-                    byte[] buf = new byte[2048];
-                    int n;
-                    while ((n = in.read(buf)) > 0) sb.append(new String(buf, 0, n, "UTF-8"));
-                    in.close();
-                    conn.disconnect();
-                    org.json.JSONObject o = new org.json.JSONObject(sb.toString());
+                    org.json.JSONObject o = UpdateChecker.latestInfo();
                     String url = o.optString("watch", "");
                     final String ver = o.optString("watchVersion", "");
                     if (url.isEmpty()) {
@@ -176,6 +166,25 @@ public class WatchActivity extends Activity {
                     File dir = new File(getFilesDir(), "watch");
                     if (!dir.exists() && !dir.mkdirs()) throw new Exception("建目录失败");
                     final File out = new File(dir, "medwatch-" + (ver.isEmpty() ? "latest" : ver) + ".bin");
+                    // 本地已经是这个版本或更新的，就不再下载，免得反复下载把内存塞满
+                    String curPath = getSharedPreferences("app_prefs", MODE_PRIVATE).getString("watch_pkg_path", "");
+                    String curVer = getSharedPreferences("app_prefs", MODE_PRIVATE).getString("watch_pkg_version", "");
+                    final File curFile = (curPath == null || curPath.isEmpty()) ? null : new File(curPath);
+                    if (curFile != null && curFile.exists() && curFile.length() > 1000
+                            && !ver.isEmpty() && verCmp(curVer, ver) >= 0) {
+                        pruneWatch(dir, curFile);
+                        final String have = curVer.isEmpty() ? ver : curVer;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dlg.dismiss();
+                                txtPath.setText("本地已经有最新的表端 v" + have + "，不用再下载了，直接点「安装手表端」");
+                                Loc.toast(WatchActivity.this, "已经有最新的表端 v" + have + "，不重复下载",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        return;
+                    }
                     final java.net.HttpURLConnection c2 =
                             (java.net.HttpURLConnection) new java.net.URL(url).openConnection();
                     c2.setConnectTimeout(10000);
@@ -203,6 +212,7 @@ public class WatchActivity extends Activity {
                             .putString("watch_pkg_path", out.getAbsolutePath())
                             .putString("watch_pkg_version", ver)
                             .apply();
+                    pruneWatch(dir, out);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -223,6 +233,42 @@ public class WatchActivity extends Activity {
                 }
             }
         }).start();
+    }
+
+    /** 版本号比较：a 比 b 新返回正数，相同返回 0 */
+    private static int verCmp(String a, String b) {
+        String[] x = (a == null ? "" : a).trim().split("\\.");
+        String[] y = (b == null ? "" : b).trim().split("\\.");
+        int n = Math.max(x.length, y.length);
+        for (int i = 0; i < n; i++) {
+            int xi = 0, yi = 0;
+            try {
+                xi = i < x.length ? Integer.parseInt(x[i].replaceAll("[^0-9]", "")) : 0;
+            } catch (Throwable ignored) {
+                xi = 0;
+            }
+            try {
+                yi = i < y.length ? Integer.parseInt(y[i].replaceAll("[^0-9]", "")) : 0;
+            } catch (Throwable ignored) {
+                yi = 0;
+            }
+            if (xi != yi) return xi > yi ? 1 : -1;
+        }
+        return 0;
+    }
+
+    /** 表端包只留一份最新的，旧的删掉 */
+    private static void pruneWatch(File dir, File keep) {
+        try {
+            File[] fs = dir.listFiles();
+            if (fs == null) return;
+            for (File f : fs) {
+                if (!f.getName().endsWith(".bin")) continue;
+                if (keep != null && f.getAbsolutePath().equals(keep.getAbsolutePath())) continue;
+                f.delete();
+            }
+        } catch (Throwable ignored) {
+        }
     }
 
     /** 下载过就用下载的那份，没下载过用包里内置的 */

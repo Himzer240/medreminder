@@ -23,7 +23,7 @@ $BT/aapt2 link -o build/base.apk \
   --java build/gen \
   --auto-add-overlay \
   --min-sdk-version 24 --target-sdk-version 33 \
-  --version-code 124 --version-name 8.25.1
+  --version-code 145 --version-name 8.25.22
 
 echo "[3/5] javac"
 javac -encoding UTF-8 -source 8 -target 8 -Xlint:-options \
@@ -48,7 +48,7 @@ if [ ! -f "$KS" ]; then
     -dname "CN=MedReminder, OU=App, O=Doubao, L=Beijing, C=CN" > /dev/null 2>&1
 fi
 $BT/apksigner sign --ks "$KS" --ks-pass pass:medreminder --key-pass pass:medreminder \
-  --out MedReminder-8.25.1.apk build/aligned.apk
+  --out MedReminder-8.25.22.apk build/aligned.apk
 
-echo "done: $(pwd)/MedReminder-8.25.1.apk"
-ls -lh MedReminder-8.25.1.apk
+echo "done: $(pwd)/MedReminder-8.25.22.apk"
+ls -lh MedReminder-8.25.22.apk
