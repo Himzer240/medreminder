@@ -1,2 +1,16 @@
-# medreminder
-吃药提醒：小米手表配套的吃药提醒 App，含手机端与手表端源码、更新包与版本信息
+# 吃药提醒（MedReminder）
+
+小米手表配套的吃药提醒 App，手机端（com.doubao.medreminder）+ 手表端小程序。
+
+## 版本与更新
+
+- 最新版：v8.22.0（versionCode 110）
+- 检查更新的元数据在 `updates/version.json`，App 里的「设置 → 检查更新」会读这个文件，比对 versionCode，有新包就下载并跳到系统安装器。
+- 字段说明：`versionCode` 整数、`versionName` 字符串、`url` 直接指向 APK 地址、`note` 更新说明。
+
+## 目录
+
+- `updates/version.json` —— 最新版本信息（每次发版都要改这里）
+- `CHANGELOG.md` —— 更新日志
+
+发版流程：改完代码 → 打包签名 → 上传 APK → 把 `updates/version.json` 里的版本号和 url 换成新的。
