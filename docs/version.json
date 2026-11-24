@@ -1,15 +1,20 @@
 {
-  "versionCode": 128,
-  "versionName": "8.25.5",
-  "url": "https://cdn.jsdelivr.net/gh/Himzer240/medreminder@main/releases/android/medreminder-8.25.5.apk",
-  "watch": "https://cdn.jsdelivr.net/gh/Himzer240/medreminder@main/releases/watch/medwatch-1.21.bin",
+  "versionCode": 129,
+  "versionName": "8.25.6",
+  "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.6.apk",
+  "watch": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/watch/medwatch-1.21.bin",
   "watchVersion": "1.21",
-  "note": "加了闪退/运行日志，设置页可查看位置并一键分享；修掉更新弹窗导致的闪退",
+  "note": "版本检查改走 gh-proxy 代理（jsDelivr 缓存太久）；修闪退；手表端 1.21 计划可暂停",
   "history": [
+    {
+      "version": "8.25.6",
+      "note": "版本检查走代理，发版即时可见",
+      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.6.apk"
+    },
     {
       "version": "8.25.5",
       "note": "日志（闪退可导出）",
-      "url": "https://cdn.jsdelivr.net/gh/Himzer240/medreminder@main/releases/android/medreminder-8.25.5.apk"
+      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.5.apk"
     },
     {
       "version": "8.25.4",
@@ -25,11 +30,6 @@
       "version": "8.25.2",
       "note": "镜像加速 + 从仓库取包",
       "url": "https://cdn.jsdelivr.net/gh/Himzer240/medreminder@main/releases/android/medreminder-8.25.2.apk"
-    },
-    {
-      "version": "8.25.1",
-      "note": "没网提示 + 下载表端软件",
-      "url": "https://cdn.jsdelivr.net/gh/Himzer240/medreminder@main/releases/android/medreminder-8.25.1.apk"
     }
   ]
 }
