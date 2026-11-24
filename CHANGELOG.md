@@ -1,5 +1,10 @@
 # 更新日志
 
+## v8.25.5（versionCode 128）
+- 新增日志：闪退（任何线程没捕获的异常）自动写文件，平时的检查更新、下载、失败原因也记
+- 设置页底部新增「日志」：显示日志文件夹位置，能「分享日志」（直接发到聊天窗口）或「清空」
+- 日志位置：Android/data/com.doubao.medreminder/files/logs/（app.log 运行日志，crash-*.log 闪退堆栈）
+
 ## v8.25.4（versionCode 127）
 - 修闪退：装着的版本和仓库里的最新版不一致时，App 回到前台会弹更新窗，原来用的是 Application 的上下文，Android 不允许往这上面挂窗口，直接 BadTokenException 崩掉。现在改成拿当前 Activity 来弹
 - 找不到 Activity 时干脆不弹（不会崩），等下次回前台再说
