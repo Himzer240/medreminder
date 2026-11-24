@@ -1,11 +1,16 @@
 {
-  "versionCode": 137,
-  "versionName": "8.25.14",
-  "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.14.apk",
-  "watch": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/watch/medwatch-1.25.bin",
-  "watchVersion": "1.25",
-  "note": "表端 1.25：手机端关闭的计划不上手表主页，但在管理次数页能看到（已关闭）",
+  "versionCode": 138,
+  "versionName": "8.25.15",
+  "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.15.apk",
+  "watch": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/watch/medwatch-1.26.bin",
+  "watchVersion": "1.26",
+  "note": "手表连上自动要计划，暂停按钮配色修复（表端 1.26）",
   "history": [
+    {
+      "version": "8.25.15",
+      "note": "自动同步+暂停按钮修复",
+      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.15.apk"
+    },
     {
       "version": "8.25.14",
       "note": "表端关闭计划在管理页可见",
@@ -25,11 +30,6 @@
       "version": "8.25.10",
       "note": "不重复下载 + 清理旧包",
       "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.10.apk"
-    },
-    {
-      "version": "8.25.9",
-      "note": "表端状态同步到手机",
-      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.9.apk"
     }
   ]
 }
