@@ -13,16 +13,16 @@
 
 ---
 
-## 当前版本：v8.25.1（versionCode 124）
+## 当前版本：v8.25.5（versionCode 128）· 手表端 1.21
 
-- 手机端没网时，检查更新与下载表端都会提示「还没有连接到网络」
-- 手表页新增「下载表端软件（取最新版）」，和「安装手表端」并存
-- 未连接手表时，手表页只留「连接手表」「同步计划」，其余按钮灰掉不可点
-- 主题色 24 个、检查更新带动画提示、疑惑问答整页跟主题色
+- 闪退已修：更新弹窗原来用 Application 的上下文，安卓直接 BadToken 崩；现在用当前 Activity，弹不出来也不崩
+- 新增日志：闪退自动写 `crash-*.log`，运行时写 `app.log`，设置页「日志」可查看位置并一键分享
+- 手表端 1.21：计划可暂停（主页不显示，手表设置里可选「恢复」或「禁用」），手表设置页颜色跟随手机主题
+- 更新检查与下载走 jsDelivr 镜像，三个地址自动重试，安装包直接从本仓库取
 
-**手机端：** [medreminder-8.25.1.apk](releases/android/medreminder-8.25.1.apk)
+**手机端：** [medreminder-8.25.5.apk](releases/android/medreminder-8.25.5.apk)
 
-**手表端：** [medwatch-1.20.bin](releases/watch/medwatch-1.20.bin)
+**手表端：** [medwatch-1.21.bin](releases/watch/medwatch-1.21.bin)
 
 ## 仓库里有什么
 
@@ -63,14 +63,21 @@ cd watch && npm i && npx aiot release --enable-jsc
 
 | 版本 | 说明 | 下载 |
 | --- | --- | --- |
+| v8.25.5 | 日志（闪退可导出）+ 修闪退 | [下载](releases/android/medreminder-8.25.5.apk) |
+| v8.25.4 | 修闪退（换 Activity 弹窗） | [下载](releases/android/medreminder-8.25.4.apk) |
+| v8.25.3 | 手表端 1.21：计划暂停 | [下载](releases/android/medreminder-8.25.3.apk) |
+| v8.25.2 | 更新走 jsDelivr 镜像 | [下载](releases/android/medreminder-8.25.2.apk) |
 | v8.25.1 | 没网提示 + 下载表端软件 | [下载](releases/android/medreminder-8.25.1.apk) |
-| v8.24.7 | 顶部手表图标固定红色 | [下载](releases/android/medreminder-8.24.7.apk) |
-| v8.24.6 | 手表设置页背景跟主题色 | [下载](releases/android/medreminder-8.24.6.apk) |
-| v8.24.5 | 手表背景色真正同步 | [下载](releases/android/medreminder-8.24.5.apk) |
 
 ## 关于更新
 
 打开 App 就会自动查版本：有新版就弹窗，两条路——要么更新、要么不更新。
+
+版本信息读 `updates/version.json`，依次尝试 jsDelivr / fastly / raw 三个地址；安装包地址也在 json 里，指向本仓库 `releases/`。
+
+## 关于日志
+
+出问题时看 `Android/data/com.doubao.medreminder/files/logs/`：`crash-*.log` 是闪退堆栈，`app.log` 是运行日志。App 里「设置 → 日志」能看到路径、能直接分享出来。
 
 ## 说明
 
