@@ -1,13 +1,13 @@
 {
-  "versionCode": 115,
-  "versionName": "8.24.1",
-  "url": "https://aka.doubaocdn.com/s/BQp49nPyr3",
-  "note": "检查更新时按钮下方有「正在检查…」动画提示，没查到会提示再多点几次",
+  "versionCode": 116,
+  "versionName": "8.24.2",
+  "url": "https://aka.doubaocdn.com/s/FtnXfnScgr",
+  "watch": "https://aka.doubaocdn.com/s/lN2LEhbQdg",
+  "note": "主题色同步到手表端；手表端 1.18 包一并更新",
   "history": [
+    { "version": "8.24.2", "note": "主题色同步到手表端", "url": "https://aka.doubaocdn.com/s/FtnXfnScgr" },
     { "version": "8.24.1", "note": "检查更新带动画提示", "url": "https://aka.doubaocdn.com/s/BQp49nPyr3" },
     { "version": "8.24.0", "note": "前台自动检查更新", "url": "https://aka.doubaocdn.com/s/ktR9EXjUG6" },
-    { "version": "8.23.2", "note": "问答页整页跟主题色", "url": "https://aka.doubaocdn.com/s/083wedR9iW" },
-    { "version": "8.23.1", "note": "检查更新先查下载目录", "url": "https://aka.doubaocdn.com/s/Qv1kVrtwm4" },
-    { "version": "8.23.0", "note": "主题色预设加到 24 个", "url": "https://aka.doubaocdn.com/s/TjevNPoPkE" }
+    { "version": "8.23.2", "note": "问答页整页跟主题色", "url": "https://aka.doubaocdn.com/s/083wedR9iW" }
   ]
 }
