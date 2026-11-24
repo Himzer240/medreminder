@@ -46,7 +46,7 @@
       <span class="no" id="verName">v8.23.0</span>
       <span class="meta" id="verMeta">versionCode 111 · 最新版</span>
     </div>
-    <p class="note" id="verNote">主题色预设加到 24 个色卡</p>
+    <p class="note" id="verNote">主题色预设从 10 个加到 24 个，色卡 5 个一行</p>
     <a class="btn btn-primary" id="dl" href="https://aka.doubaocdn.com/s/TjevNPoPkE">直接下载 APK</a>
     <a class="btn btn-ghost" href="https://github.com/Himzer240/medreminder">到 GitHub 查看仓库</a>
     <div class="row">
@@ -76,7 +76,7 @@
 </div>
 <script>
 (function () {
-  fetch("../updates/version.json?t=" + Date.now())
+  fetch("https://raw.githubusercontent.com/Himzer240/medreminder/main/updates/version.json?t=" + Date.now())
     .then(function (r) { return r.json(); })
     .then(function (v) {
       if (v.versionName) document.getElementById("verName").textContent = "v" + v.versionName;
