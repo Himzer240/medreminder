@@ -1,11 +1,16 @@
 {
-  "versionCode": 146,
-  "versionName": "8.25.23",
-  "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.23.apk",
-  "watch": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/watch/medwatch-1.32.bin",
-  "watchVersion": "1.32",
-  "note": "设置页新增反馈/举报入口，走代理通道提交到仓库",
+  "versionCode": 147,
+  "versionName": "8.25.24",
+  "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.24.apk",
+  "watch": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/watch/medwatch-1.33.bin",
+  "watchVersion": "1.33",
+  "note": "暂停/恢复统一为两端同一开关，修主页空列表",
   "history": [
+    {
+      "version": "8.25.24",
+      "note": "暂停恢复统一开关",
+      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.24.apk"
+    },
     {
       "version": "8.25.23",
       "note": "App 内反馈/举报入口",
@@ -25,11 +30,6 @@
       "version": "8.25.19",
       "note": "表端按钮与连接可靠性修复",
       "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.19.apk"
-    },
-    {
-      "version": "8.25.18",
-      "note": "双向即时同步补齐+按钮修复",
-      "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Himzer240/medreminder/main/releases/android/medreminder-8.25.18.apk"
     }
   ]
 }

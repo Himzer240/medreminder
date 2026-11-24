@@ -9,7 +9,7 @@
 
     <div class="card" style="background-color: {{cardBg}}">
       <text class="cardTitle">震动提醒</text>
-      <div class="switch {{vibOn ? 'switchOn' : ''}}" onclick="toggleVib">
+      <div class="switch {{vibOn ? 'switchOn' : ''}}" style="background-color: {{vibOn ? accentColor : switchOffBg}}" onclick="toggleVib">
         <text class="switchTx">{{vibTx}}</text>
       </div>
     </div>
@@ -32,7 +32,7 @@
 
     <div class="about">
       <text class="aboutTitle">吃药提醒 · 手表端</text>
-      <text class="aboutLine">版本 1.20　　作者 萧茂蜜呀</text>
+      <text class="aboutLine">版本 1.33　　作者 萧茂蜜呀</text>
       <text class="aboutLine">B 站同名 · 手机端负责提醒，表上负责看和打卡</text>
     </div>
 
@@ -367,6 +367,7 @@ export default {
     rowBg: '#141A1E',
     vibOn: true,
     vibTx: '开',
+    switchOffBg: '#2B363C',
     toastOn: false,
     tx: '',
     has0: false,
@@ -379,6 +380,10 @@ export default {
 
   loadTheme() {
     const that = this
+    if (typeof globalThis.__accent === 'string' && globalThis.__accent.length >= 7) {
+      this.applyTheme(globalThis.__accent)
+      return
+    }
     try {
       storage.get({
         key: 'mw_accent',
@@ -413,6 +418,7 @@ export default {
       return '#' + pad(c(r)) + pad(c(g)) + pad(c(b))
     }
     this.accentColor = hex
+    globalThis.__accent = hex
     this.pageBg = shade(0.16)
     this.cardBg = shade(0.30)
     this.innerBg = shade(0.26)
@@ -420,16 +426,60 @@ export default {
   },
 
   onInit() {
-    this.loadTheme()
     this.rawPlans = []
+    this.loadTheme()
     try {
       this.conn = interconnect.instance()
     } catch (e) {
       this.conn = null
     }
+    this.listenTheme()
     this.toastOn = false
     this.tx = ''
     this.load()
+  },
+
+  onShow() {
+    this.loadTheme()
+    this.load()
+  },
+
+  /** 手机端改了主题色会推过来，这里跟着换，不然设置页会一直是旧色 */
+  listenTheme() {
+    const that = this
+    if (!this.conn) {
+      return
+    }
+    try {
+      globalThis.__pageMsg = function (data) {
+        let payload = null
+        try {
+          payload = data && data.data ? data.data : data
+          if (typeof payload === 'string') {
+            payload = JSON.parse(payload)
+          }
+        } catch (e) {
+          payload = null
+        }
+        if (!payload) {
+          return
+        }
+        if (payload.tag === 'theme' && payload.color) {
+          that.applyTheme(payload.color)
+        }
+        if (payload.tag === 'plans') {
+          that.loadTheme()
+          that.load()
+        }
+      }
+      this.conn.onopen = function () {
+        try {
+          that.conn.send({ data: { tag: 'wantTheme' }, success: function () {}, fail: function () {} })
+        } catch (e) {
+        }
+      }
+    } catch (e) {
+    }
   },
 
   load() {
@@ -466,6 +516,7 @@ export default {
       }
     })
   },
+
 
   render() {
     this.has0 = this.rawPlans.length > 0

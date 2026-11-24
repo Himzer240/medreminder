@@ -297,8 +297,7 @@ public class WatchSync {
             o.put("dose", m.dose);
             o.put("meal", "不限".equals(m.meal) ? "" : m.meal);
             o.put("purpose", m.purpose == null ? "" : m.purpose);
-            long wId = m.id;
-            o.put("off", !m.enabled || WatchFlags.stateOf(ctx, wId) != WatchFlags.NORMAL);
+            o.put("off", !m.enabled);
             o.put("t", SyncStamp.last(ctx));
             JSONArray t = new JSONArray();
             for (int[] hm : m.times) {

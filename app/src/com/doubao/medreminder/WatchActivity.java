@@ -14,7 +14,7 @@ import java.io.InputStream;
 public class WatchActivity extends Activity {
 
     private static final String ASSET_NAME = "medwatch.bin";
-    private static final String OUT_NAME = "吃药提醒手表端-v1.32.bin";
+    private static final String OUT_NAME = "吃药提醒手表端-v1.33.bin";
 
     private TextView txtSync;
     private TextView txtPath;

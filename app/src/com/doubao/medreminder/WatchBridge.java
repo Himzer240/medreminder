@@ -314,6 +314,21 @@ public class WatchBridge {
                 WatchSync.pushTheme(appCtx);
                 return;
             }
+            if ("pause".equals(tag)) {
+                long pid = parseId(o.optString("id", ""));
+                Medicine pm = pid > 0 ? MedStore.find(appCtx, pid) : null;
+                if (pm != null) {
+                    pm.enabled = false;
+                    MedStore.upsert(appCtx, pm);
+                    Scheduler.cancelMedicine(appCtx, pm);
+                    for (int i = 0; i < pm.times.size(); i++) Scheduler.cancelRepeat(appCtx, pm.id, i);
+                    WatchSync.pushPlans(appCtx);
+                    lastRecv = stamp + " 表上暂停「" + pm.name + "」";
+                    EventLog.add(appCtx, "收到手表：暂停「" + pm.name + "」");
+                    notifyUi();
+                }
+                return;
+            }
             if ("enable".equals(tag)) {
                 // 手表上直接点「重新打开」：把手机端这个计划重新开启提醒
                 long medId = parseId(o.optString("id", ""));

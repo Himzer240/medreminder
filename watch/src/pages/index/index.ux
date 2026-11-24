@@ -509,6 +509,9 @@ export default {
 
   onInit() {
     this.rawPlans = []
+    this.allPlans = []
+    this.paused = []
+    this.disabled = []
     this.done = { date: '', counts: {} }
     this.nextPlanId = ''
     this.lastPlanId = ''
@@ -524,6 +527,7 @@ export default {
     this.vibOn = true
     this.loadVib()
     this.loadTheme()
+    this.loadPaused()
     this.bootstrap()
     this.bindPhone()
     this.startTimeWatch()
@@ -531,6 +535,17 @@ export default {
 
   onShow() {
     this.loadVib()
+    this.loadTheme()
+    this.loadPaused()
+    this.bindPhone()
+    if (this.allPlans && this.allPlans.length) {
+      this.rawPlans = this.visibleOf(this.allPlans)
+      this.render()
+    }
+    const that = this
+    setTimeout(function () {
+      that.sendPhone({ tag: 'wantPlans' })
+    }, 300)
   },
 
   onDestroy() {
@@ -542,6 +557,108 @@ export default {
       clearTimeout(this.toastTimer)
       this.toastTimer = null
     }
+  },
+
+  /** 暂停名单：设置的 id 在主页不显示，但计划和记录都还在 */
+  loadPaused() {
+    const that = this
+    try {
+      storage.get({
+        key: 'mw_paused',
+        success: function (v) {
+          let arr = []
+          try {
+            arr = JSON.parse(v)
+          } catch (e) {
+            arr = []
+          }
+          if (!arr || !arr.length) {
+            arr = []
+          }
+          that.paused = arr
+          storage.get({
+            key: 'mw_disabled',
+            success: function (v2) {
+              let a2 = []
+              try {
+                a2 = JSON.parse(v2)
+              } catch (e2) {
+                a2 = []
+              }
+              that.disabled = a2 || []
+            },
+            fail: function () {
+              that.disabled = []
+            }
+          })
+          if (that.allPlans && that.allPlans.length) {
+            that.rawPlans = that.visibleOf(that.allPlans)
+            that.render()
+          }
+        },
+        fail: function () {
+          that.paused = []
+        }
+      })
+    } catch (e) {
+      this.paused = []
+    }
+  },
+
+  prunePaused(list) {
+    const ids = {}
+    for (let i = 0; i < list.length; i++) {
+      ids[list[i].id] = true
+    }
+    const cur = this.paused || []
+    const keep = []
+    for (let i = 0; i < cur.length; i++) {
+      if (ids[cur[i]]) {
+        keep.push(cur[i])
+      }
+    }
+    if (keep.length !== cur.length) {
+      this.paused = keep
+      try {
+        storage.set({ key: 'mw_paused', value: JSON.stringify(keep) })
+      } catch (e) {
+      }
+    }
+  },
+
+  sendFlags() {
+    if (!this.conn) {
+      return
+    }
+    try {
+      this.conn.send({
+        data: { tag: 'pauseState', paused: this.paused || [], disabled: this.disabled || [] },
+        success: function () {},
+        fail: function () {}
+      })
+    } catch (e) {
+    }
+  },
+
+  isPaused(planId) {
+    const arr = this.paused || []
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] === planId) {
+        return true
+      }
+    }
+    return false
+  },
+
+  visibleOf(list) {
+    const out = []
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].off === true) {
+        continue
+      }
+      out.push(list[i])
+    }
+    return out
   },
 
   loadTheme() {
@@ -590,7 +707,7 @@ export default {
     const that = this
     try {
       this.conn = interconnect.instance()
-      this.conn.onmessage = function (msg) {
+      globalThis.__pageMsg = function (msg) {
         let payload = null
         try {
           payload = typeof msg.data === 'string' ? JSON.parse(msg.data) : msg.data
@@ -618,7 +735,7 @@ export default {
         if (payload.tag !== 'plans' || !payload.plans) {
           return
         }
-        that.applyPlans(payload.plans, payload.color)
+        that.applyPlans(payload.plans, payload.color, payload.paused)
       }
       this.conn.onopen = function () {
         that.connTx = '已连接手机'
@@ -626,6 +743,14 @@ export default {
         that.connColor = that.accentColor
         try {
           that.sendPhone({ tag: 'wantTheme' })
+        } catch (e) {
+        }
+        try {
+          that.sendPhone({ tag: 'wantPlans' })
+        } catch (e) {
+        }
+        try {
+          that.sendFlags()
         } catch (e) {
         }
       }
@@ -666,6 +791,7 @@ export default {
       return '#' + pad(c(r)) + pad(c(g)) + pad(c(b))
     }
     this.accentColor = hex
+    globalThis.__accent = hex
     this.saveTheme(hex)
     this.nextLabelColor = hex
     this.btnBg = hex
@@ -677,9 +803,24 @@ export default {
     }
   },
 
-  applyPlans(list, color) {
+  applyPlans(list, color, paused) {
     if (color) {
       this.applyTheme(color)
+    }
+    if (paused && paused.length !== undefined) {
+      const keep = {}
+      for (let k = 0; k < list.length; k++) {
+        keep['' + (list[k].id || '')] = true
+      }
+      const keepPaused = []
+      for (let k = 0; k < paused.length; k++) {
+        if (keep['' + paused[k]]) {
+          keepPaused.push('' + paused[k])
+        }
+      }
+      this.paused = keepPaused
+      this.pausedList = keepPaused
+      storage.set({ key: 'mw_paused', value: JSON.stringify(keepPaused) })
     }
     const normalized = []
     for (let i = 0; i < list.length; i++) {
@@ -701,13 +842,14 @@ export default {
         meal: it.meal || '',
         purpose: it.purpose || '',
         times: times,
+        off: it.off === true,
         today: typeof it.today === 'number' ? it.today : 0
       })
     }
-    if (!normalized.length) {
-      return
-    }
-    this.rawPlans = normalized
+    // 手机端关掉提醒的计划不会传过来：这里要把手表上残留的也清掉
+    this.allPlans = normalized
+    this.prunePaused(normalized)
+    this.rawPlans = this.visibleOf(normalized)
     storage.set({
       key: PLAN_KEY,
       value: JSON.stringify(normalized)
@@ -720,7 +862,10 @@ export default {
     this.done.counts = counts
     this.saveDone()
     this.loadDone()
-    this.toast = '已同步 ' + normalized.length + ' 个计划'
+    this.toast = normalized.length
+      ? ('已同步 ' + normalized.length + ' 个计划')
+      : '手机端没有在提醒的计划'
+    
     this.toastOn = true
     const that = this
     if (this.toastTimer) {
@@ -754,11 +899,14 @@ export default {
         if (!plans || !plans.length) {
           plans = DEFAULT_PLANS
         }
-        that.rawPlans = plans
+        that.allPlans = plans
+        that.rawPlans = that.visibleOf(plans)
+        that.rawPlansDone = true
         that.loadDone()
       },
       fail: function () {
-        that.rawPlans = DEFAULT_PLANS
+        that.allPlans = DEFAULT_PLANS
+        that.rawPlans = that.visibleOf(DEFAULT_PLANS)
         that.loadDone()
       }
     })
@@ -803,9 +951,10 @@ export default {
   },
 
   planById(planId) {
-    for (let i = 0; i < this.rawPlans.length; i++) {
-      if (this.rawPlans[i].id === planId) {
-        return this.rawPlans[i]
+    const all = (this.allPlans && this.allPlans.length) ? this.allPlans : this.rawPlans
+    for (let i = 0; i < all.length; i++) {
+      if (all[i].id === planId) {
+        return all[i]
       }
     }
     return null
@@ -1023,17 +1172,40 @@ export default {
   },
 
   sendPhone(obj) {
-    if (!this.conn) {
-      return
-    }
     const that = this
+    if (!this.conn) {
+      // 连接对象掉了就重新拿一次
+      try {
+        this.conn = interconnect.instance()
+      } catch (e) {
+        this.conn = null
+      }
+      if (!this.conn) {
+        this.showToast('没连上手机，记录已存在表上')
+        return
+      }
+    }
     try {
       this.conn.send({
         data: obj,
         success: function () {
+          that.linkOn = true
+          that.connTx = '已连接手机'
+          that.connCls = 'connOn'
+          that.connColor = that.accentColor
           that.showToast('已同步到手机')
         },
         fail: function () {
+          // 一次失败可能是通道刚重连，重试一次再判定
+          if (!that.retryOnce) {
+            that.retryOnce = true
+            setTimeout(function () {
+              that.retryOnce = false
+              that.sendPhone(obj)
+            }, 600)
+            return
+          }
+          that.retryOnce = false
           that.showToast('没连上手机，记录已存在表上')
         }
       })

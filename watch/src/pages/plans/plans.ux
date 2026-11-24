@@ -13,13 +13,20 @@
         <text class="cCount">{{q0c}} 次／日</text>
       </div>
       <text class="cTimes">{{q0t}}</text>
-      <div class="cBtns">
+      <div class="cBtns" if="{{!q0Off}}">
         <div class="cBtn" onclick="minus0">
           <text class="cBtnTx">－ 减少</text>
         </div>
-        <div class="cBtn cBtnOn" onclick="plus0">
+        <div class="cBtn cBtnOn" style="background-color: {{accentColor}}" onclick="plus0">
           <text class="cBtnTx">＋ 增加</text>
         </div>
+      </div>
+      <div class="pauseWide" if="{{!q0Off}}" onclick="pause0">
+        <text class="pauseWideTx">{{q0Btn}}</text>
+      </div>
+      <text class="offTip" if="{{q0Off}}">手机端已关闭提醒</text>
+      <div class="pauseWide" if="{{q0Off}}" onclick="onOff0">
+        <text class="pauseWideTx">恢复这个计划</text>
       </div>
     </div>
 
@@ -29,13 +36,20 @@
         <text class="cCount">{{q1c}} 次／日</text>
       </div>
       <text class="cTimes">{{q1t}}</text>
-      <div class="cBtns">
+      <div class="cBtns" if="{{!q1Off}}">
         <div class="cBtn" onclick="minus1">
           <text class="cBtnTx">－ 减少</text>
         </div>
-        <div class="cBtn cBtnOn" onclick="plus1">
+        <div class="cBtn cBtnOn" style="background-color: {{accentColor}}" onclick="plus1">
           <text class="cBtnTx">＋ 增加</text>
         </div>
+      </div>
+      <div class="pauseWide" if="{{!q1Off}}" onclick="pause1">
+        <text class="pauseWideTx">{{q1Btn}}</text>
+      </div>
+      <text class="offTip" if="{{q1Off}}">手机端已关闭提醒</text>
+      <div class="pauseWide" if="{{q1Off}}" onclick="onOff1">
+        <text class="pauseWideTx">恢复这个计划</text>
       </div>
     </div>
 
@@ -45,13 +59,20 @@
         <text class="cCount">{{q2c}} 次／日</text>
       </div>
       <text class="cTimes">{{q2t}}</text>
-      <div class="cBtns">
+      <div class="cBtns" if="{{!q2Off}}">
         <div class="cBtn" onclick="minus2">
           <text class="cBtnTx">－ 减少</text>
         </div>
-        <div class="cBtn cBtnOn" onclick="plus2">
+        <div class="cBtn cBtnOn" style="background-color: {{accentColor}}" onclick="plus2">
           <text class="cBtnTx">＋ 增加</text>
         </div>
+      </div>
+      <div class="pauseWide" if="{{!q2Off}}" onclick="pause2">
+        <text class="pauseWideTx">{{q2Btn}}</text>
+      </div>
+      <text class="offTip" if="{{q2Off}}">手机端已关闭提醒</text>
+      <div class="pauseWide" if="{{q2Off}}" onclick="onOff2">
+        <text class="pauseWideTx">恢复这个计划</text>
       </div>
     </div>
 
@@ -155,6 +176,29 @@
     margin-right: 0;
   }
 
+  .offTip {
+    font-size: 14px;
+    color: #7C8A92;
+    margin-top: 6px;
+  }
+
+  .pauseWide {
+    height: 52px;
+    margin-top: 8px;
+    border-radius: 14px;
+    border-width: 1px;
+    border-color: #1098AD;
+    background-color: #141A1E;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .pauseWideTx {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1098AD;
+  }
+
   .cBtnTx {
     font-size: 16px;
     color: #FFFFFF;
@@ -205,6 +249,7 @@
 import storage from '@system.storage'
 import vibrator from '@system.vibrator'
 import router from '@system.router'
+import interconnect from '@system.interconnect'
 
 const PLAN_KEY = 'mw_plans'
 
@@ -230,6 +275,10 @@ export default {
     has1: false,
     has2: false,
     isEmpty: true,
+    accentColor: '#1098AD',
+    q0p: false, q1p: false, q2p: false,
+    q0Off: false, q1Off: false, q2Off: false,
+    q0Btn: '暂停这个计划', q1Btn: '暂停这个计划', q2Btn: '暂停这个计划',
     q0n: '', q0t: '', q0c: '',
     q1n: '', q1t: '', q1c: '',
     q2n: '', q2t: '', q2c: '',
@@ -240,6 +289,23 @@ export default {
 
   onInit() {
     this.rawPlans = []
+    this.pausedList = []
+    this.reload()
+  },
+
+  onShow() {
+    this.reload()
+  },
+
+  reload() {
+    try {
+      this.conn = interconnect.instance()
+    } catch (e) {
+      this.conn = null
+    }
+    this.loadTheme()
+    this.listenPhone()
+    this.askPhone()
     const that = this
     storage.get({
       key: 'mw_vib',
@@ -258,13 +324,203 @@ export default {
         } catch (e) {
           that.rawPlans = []
         }
-        that.render()
+        that.loadPaused()
       },
       fail: function () {
         that.rawPlans = []
+        that.loadPaused()
+      }
+    })
+  },
+
+  askPhone() {
+    const that = this
+    if (!this.conn) {
+      return
+    }
+    try {
+      this.conn.send({ data: { tag: 'wantPlans' }, success: function () {}, fail: function () {} })
+      this.conn.send({ data: { tag: 'wantTheme' }, success: function () {}, fail: function () {} })
+    } catch (e) {
+    }
+  },
+
+  listenPhone() {
+    const that = this
+    if (!this.conn) {
+      return
+    }
+    globalThis.__pageMsg = function (ret) {
+      let msg = ret && ret.data ? ret.data : ret
+      if (typeof msg === 'string') {
+        try {
+          msg = JSON.parse(msg)
+        } catch (e) {
+          return
+        }
+      }
+      if (!msg || !msg.tag) {
+        return
+      }
+      if (msg.tag === 'plans' && msg.plans) {
+        that.applyPlans(msg.plans, msg.paused)
+        if (msg.color) {
+          that.applyColor(msg.color)
+        }
+      } else if (msg.tag === 'theme' && msg.color) {
+        that.applyColor(msg.color)
+      }
+    }
+    this.conn.onopen = function () {
+      try {
+        that.conn.send({ data: { tag: 'wantTheme' }, success: function () {}, fail: function () {} })
+        that.conn.send({ data: { tag: 'wantPlans' }, success: function () {}, fail: function () {} })
+      } catch (e) {
+      }
+    }
+  },
+
+  applyPlans(list, paused) {
+    if (paused && paused.length !== undefined) {
+      const ids = {}
+      for (let k = 0; k < list.length; k++) {
+        ids['' + (list[k].id || '')] = true
+      }
+      const keep = []
+      for (let k = 0; k < paused.length; k++) {
+        if (ids['' + paused[k]]) {
+          keep.push('' + paused[k])
+        }
+      }
+      this.pausedList = keep
+      storage.set({ key: 'mw_paused', value: JSON.stringify(keep) })
+    }
+    const normalized = []
+    for (let i = 0; i < list.length; i++) {
+      const it = list[i] || {}
+      const times = []
+      const raw = it.times || []
+      for (let t = 0; t < raw.length; t++) {
+        if (typeof raw[t] === 'string') {
+          times.push(raw[t])
+        }
+      }
+      if (!times.length) {
+        continue
+      }
+      normalized.push({
+        id: it.id !== undefined && it.id !== null && it.id !== '' ? '' + it.id : ('p' + (i + 1)),
+        name: it.name || '药品',
+        dose: it.dose || '',
+        meal: it.meal || '',
+        purpose: it.purpose || '',
+        times: times,
+        off: it.off === true
+      })
+    }
+    this.rawPlans = normalized
+    storage.set({ key: PLAN_KEY, value: JSON.stringify(normalized) })
+    this.render()
+  },
+
+  applyColor(hex) {
+    if (!hex || hex.length < 7) {
+      return
+    }
+    this.accentColor = hex
+    globalThis.__accent = hex
+  },
+
+  loadTheme() {
+    if (typeof globalThis.__accent === 'string' && globalThis.__accent.length >= 7) {
+      this.accentColor = globalThis.__accent
+      return
+    }
+    const that = this
+    try {
+      storage.get({
+        key: 'mw_accent',
+        success: function (v) {
+          if (v && v.length >= 7) {
+            that.accentColor = v
+          }
+        },
+        fail: function () {}
+      })
+    } catch (e) {
+    }
+  },
+
+  loadPaused() {
+    const that = this
+    storage.get({
+      key: 'mw_paused',
+      success: function (v) {
+        let arr = []
+        try {
+          arr = JSON.parse(v)
+        } catch (e) {
+          arr = []
+        }
+        that.pausedList = arr || []
+        that.render()
+      },
+      fail: function () {
+        that.pausedList = []
         that.render()
       }
     })
+  },
+
+  sendFlags() {
+    const that = this
+    if (!this.conn) {
+      return
+    }
+    try {
+      that.conn.send({
+        data: { tag: 'pauseState', paused: that.pausedList || [], disabled: [] },
+        success: function () {},
+        fail: function () {}
+      })
+    } catch (e) {
+    }
+  },
+
+  isPaused(id) {
+    const arr = this.pausedList || []
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] === id) {
+        return true
+      }
+    }
+    return false
+  },
+
+  togglePause(index) {
+    const plan = this.rawPlans[index]
+    if (!plan) {
+      return
+    }
+    const wasOff = plan.off === true
+    if (!this.conn) {
+      this.tip('没连接手机，先连上再试')
+      return
+    }
+    try {
+      this.conn.send({
+        data: { tag: wasOff ? 'enable' : 'pause', id: plan.id },
+        success: function () {},
+        fail: function () {}
+      })
+    } catch (e) {
+      this.tip('发送失败，再试一次')
+      return
+    }
+    plan.off = !wasOff
+    this.save()
+    this.render()
+    this.tip(wasOff ? '已恢复：回到主页了' : '已暂停：主页不再显示它')
   },
 
   render() {
@@ -273,19 +529,28 @@ export default {
     this.has2 = this.rawPlans.length > 2
     this.isEmpty = this.rawPlans.length === 0
     if (this.has0) {
-      this.q0n = this.rawPlans[0].name
+      this.q0p = this.rawPlans[0].off === true
+      this.q0Off = this.rawPlans[0].off === true
+      this.q0Btn = this.q0p ? '恢复这个计划' : '暂停这个计划'
+      this.q0n = this.rawPlans[0].name + (this.rawPlans[0].off === true ? '（已关闭）' : '')
       this.q0t = (this.rawPlans[0].times || []).join(' / ')
-      this.q0c = (this.rawPlans[0].times || []).length
+      this.q0c = this.rawPlans[0].off === true ? 0 : (this.rawPlans[0].times || []).length
     }
     if (this.has1) {
-      this.q1n = this.rawPlans[1].name
+      this.q1p = this.rawPlans[1].off === true
+      this.q1Off = this.rawPlans[1].off === true
+      this.q1Btn = this.q1p ? '恢复这个计划' : '暂停这个计划'
+      this.q1n = this.rawPlans[1].name + (this.rawPlans[1].off === true ? '（已关闭）' : '')
       this.q1t = (this.rawPlans[1].times || []).join(' / ')
-      this.q1c = (this.rawPlans[1].times || []).length
+      this.q1c = this.rawPlans[1].off === true ? 0 : (this.rawPlans[1].times || []).length
     }
     if (this.has2) {
-      this.q2n = this.rawPlans[2].name
+      this.q2p = this.rawPlans[2].off === true
+      this.q2Off = this.rawPlans[2].off === true
+      this.q2Btn = this.q2p ? '恢复这个计划' : '暂停这个计划'
+      this.q2n = this.rawPlans[2].name + (this.rawPlans[2].off === true ? '（已关闭）' : '')
       this.q2t = (this.rawPlans[2].times || []).join(' / ')
-      this.q2c = (this.rawPlans[2].times || []).length
+      this.q2c = this.rawPlans[2].off === true ? 0 : (this.rawPlans[2].times || []).length
     }
   },
 
@@ -361,6 +626,32 @@ export default {
   minus0() { this.delTime(0) },
   minus1() { this.delTime(1) },
   minus2() { this.delTime(2) },
+
+  openPlan(index) {
+    const plan = this.rawPlans[index]
+    if (!plan || !this.conn) {
+      this.tip('没连接手机，先连上再试')
+      return
+    }
+    try {
+      this.conn.send({
+        data: { tag: 'enable', id: plan.id },
+        success: function () {},
+        fail: function () {}
+      })
+      this.tip('已告诉手机恢复「' + plan.name + '」')
+    } catch (e) {
+      this.tip('发送失败，再试一次')
+    }
+  },
+
+  onOff0() { this.openPlan(0) },
+  onOff1() { this.openPlan(1) },
+  onOff2() { this.openPlan(2) },
+
+  pause0() { this.togglePause(0) },
+  pause1() { this.togglePause(1) },
+  pause2() { this.togglePause(2) },
 
   back() {
     router.back()
