@@ -1,13 +1,13 @@
 {
-  "versionCode": 111,
-  "versionName": "8.23.0",
-  "url": "https://aka.doubaocdn.com/s/TjevNPoPkE",
-  "note": "主题色预设从 10 个加到 24 个，色卡 5 个一行",
+  "versionCode": 112,
+  "versionName": "8.23.1",
+  "url": "https://aka.doubaocdn.com/s/Qv1kVrtwm4",
+  "note": "检查更新会先扫下载目录，里面有更高版本的包就直接安装，不用重新下载",
   "history": [
+    { "version": "8.23.1", "note": "检查更新先查下载目录", "url": "https://aka.doubaocdn.com/s/Qv1kVrtwm4" },
     { "version": "8.23.0", "note": "主题色预设加到 24 个", "url": "https://aka.doubaocdn.com/s/TjevNPoPkE" },
     { "version": "8.22.0", "note": "检查更新（GitHub）", "url": "https://aka.doubaocdn.com/s/gMXmjbdVPp" },
     { "version": "8.21.1", "note": "问答加「为什么只有小米手表」", "url": "https://aka.doubaocdn.com/s/UH2c2qUEZo" },
-    { "version": "8.20.6", "note": "问答回答口语化", "url": "https://aka.doubaocdn.com/s/5LVmHgLnyA" },
-    { "version": "8.20.2", "note": "问答改点开展开答案", "url": "https://aka.doubaocdn.com/s/6jprOCkyan" }
+    { "version": "8.20.6", "note": "问答回答口语化", "url": "https://aka.doubaocdn.com/s/5LVmHgLnyA" }
   ]
 }
